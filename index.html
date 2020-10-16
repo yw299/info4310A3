@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<head>
+
+  <title>Homework 3</title>
+  <meta charset="utf-8" />
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <script src="https://d3js.org/d3-collection.v1.min.js"></script>
+  <script src="https://d3js.org/topojson.v2.min.js"></script>
+
+  <style>
+
+  .neighborhood {
+    fill: #f9f9f9;
+    stroke: #bdbdbd;
+    stroke-width: 1px;
+  }
+
+  </style>
+
+</head>
+
+<body>
+
+  <h1>Pittsburgh Restaurant Reviews</h1>
+
+  <svg id="map" width="1200" height="900"></svg>
+
+  <script id="code">
+
+    // Map & Dimensions
+    const map = d3.select("svg#map");
+    const mapWidth = map.attr("width");
+    const mapHeight = map.attr("height");
+
+
+    // RequestData function
+    const requestData = async function() {
+
+
+      // Loading data
+      const pittsData = await d3.json("pittsburgh_neighborhoods.json");
+      const yelpData = await d3.csv("yelp_pittsburgh.csv");
+
+      // DELETE LATER
+      console.log(pittsData);
+      console.log(yelpData);
+
+      // Map Projection
+      var pitts = topojson.feature(pittsData, pittsData.objects.Neighborhoods_);
+      var pittsProjection = d3.geoMercator().fitSize([mapWidth, mapHeight], pitts);
+      var pittsPath = d3.geoPath().projection(pittsProjection);
+
+      // Restaurant position
+      yelpData.forEach( d => {
+        d.Position = pittsProjection( [d.longitude, d.latitude]);
+      });
+
+      console.log(yelpData);
+
+      // Drawing Map Projection
+      map.selectAll("path.neighborhood").data(pitts.features)
+          .join("path")
+          .attr("class", "neighborhood")
+          .attr("d", pittsPath);
+
+      // Drawing Resturant Positions
+      map.selectAll("circle").data(yelpData)
+        .join("circle")
+        .attr("r", 5)
+        .attr("fill", "orange")
+        .attr("opacity", 0.5)
+        .attr("cx", d => d.Position[0])
+        .attr("cy", d => d.Position[1]);
+
+    };
+
+
+    // RequestData call
+
+    requestData();
+
+  </script>
+
+</body>
+
+</html>
