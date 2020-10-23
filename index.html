@@ -8,7 +8,21 @@
   <script src="https://d3js.org/topojson.v2.min.js"></script>
 
   <style>
+  select {
+        display: block;
+        background-color: #E5E5E5;
+        border-color: #F9B806;
+        font-size:20px;
+        border-radius: 5px;
+        border-width: 5px;
+        /* margin:20px; */
+        padding:10px;
+    }
 
+  #button{
+        margin-top: -20px;
+        margin-left:40px;
+    }
   .neighborhood {
     fill: #f9f9f9;
     stroke: #bdbdbd;
@@ -24,6 +38,97 @@
   <h1>Pittsburgh Restaurant Reviews</h1>
 
   <svg id="map" width="1200" height="900"></svg>
+
+
+<p>Choose restaurant category</p>
+<div class="category">
+  <input type="checkbox" name="active" value="active">
+  <label for="active">Active</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="arts" value="arts">
+  <label for="arts">Arts</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="bakeries" value="bakeries">
+  <label for="bakeries">Bakeries</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="cafes" value="cafes">
+  <label for="cafes">Cafes</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="chinese" value="chinese">
+  <label for="chinese">Chinese</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="coffee" value="coffee">
+  <label for="coffee">Coffee</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="donuts" value="donuts">
+  <label for="donuts">Donuts</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="ethnicmarkets" value="ethnicmarkets">
+  <label for="ethnicmarkets">Ethnicmarkets</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="french" value="french">
+  <label for="french">French</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="indpak" value="indpak">
+  <label for="indpak">Indpak</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="italian" value="italian">
+  <label for="italian">Italian</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="japanese" value="japanese">
+  <label for="japanese">Japanese</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="mexican" value="mexican">
+  <label for="mexican">Mexican</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="newamerican" value="newamerican">
+  <label for="newamerican">NewAmerican</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="nightlife" value="nightlife">
+  <label for="nightlife">Nightlife</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="pizza" value="pizza">
+  <label for="pizza">Pizza</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="restaurant" value="restaurant">
+  <label for="restaurant">Resturant</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="sandwiches" value="sandwiches">
+  <label for="sandwiches">Sandwiches</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="shopping" value="shopping">
+  <label for="shopping">Shopping</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="sushi" value="sushi">
+  <label for="sushi">Sushi</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="thai" value="thai">
+  <label for="thai">Thai</label>
+</div>
+<div class="category">
+  <input type="checkbox" name="vietnamese" value="vietnamese">
+  <label for="vietnamese">Vietnamese</label>
+</div>
 
   <script id="code">
 
@@ -114,6 +219,8 @@
 
 
     };
+
+
 
 
     // RequestData call
