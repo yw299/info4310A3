@@ -31,6 +31,7 @@
     const map = d3.select("svg#map");
     const mapWidth = map.attr("width");
     const mapHeight = map.attr("height");
+    const chartArea = map.append("g");
 
 
     // RequestData function
@@ -58,19 +59,59 @@
       console.log(yelpData);
 
       // Drawing Map Projection
-      map.selectAll("path.neighborhood").data(pitts.features)
+      chartArea.selectAll("path.neighborhood").data(pitts.features)
           .join("path")
           .attr("class", "neighborhood")
           .attr("d", pittsPath);
 
       // Drawing Resturant Positions
-      map.selectAll("circle").data(yelpData)
+      let circles=chartArea.selectAll("circle").data(yelpData)
         .join("circle")
         .attr("r", 5)
         .attr("fill", "orange")
         .attr("opacity", 0.5)
         .attr("cx", d => d.Position[0])
         .attr("cy", d => d.Position[1]);
+
+
+        //zoom
+        let zoomExtent = [[0,0],[mapWidth,mapHeight]];
+        let translateExtent = [[-100,-100],[mapWidth+100,mapHeight+100]];
+        var plotZoom = d3.zoom()
+                       .extent(zoomExtent)
+                       .translateExtent(translateExtent)
+                       .scaleExtent([1,8])
+                       .on("zoom", plotZoomed);
+
+       // make an interactive "surface" at the top of the plot area
+     map.append("rect").attr("x",0).attr("y",0)
+                        .attr("width",mapWidth).attr("height",mapHeight)
+                        .attr("fill","none")
+                        .style("pointer-events","all");
+     // then add the zoom handler
+    map.call(plotZoom);
+
+
+           function plotZoomed( evt ) {
+
+          let transform = evt.transform;
+          //
+          chartArea.attr("transform", transform);
+          //
+          //
+          //
+          // // adjust circle size too
+          circles.attr("r", 6 / transform.k);
+
+
+        }
+
+
+
+
+
+        map.call(plotZoom.transform, d3.zoomIdentity);
+
 
     };
 
