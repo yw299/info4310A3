@@ -41,94 +41,30 @@
 
 
 <p>Choose restaurant category</p>
-<div class="category">
-  <input type="checkbox" name="active" value="active">
-  <label for="active">Active</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="arts" value="arts">
-  <label for="arts">Arts</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="bakeries" value="bakeries">
-  <label for="bakeries">Bakeries</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="cafes" value="cafes">
-  <label for="cafes">Cafes</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="chinese" value="chinese">
-  <label for="chinese">Chinese</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="coffee" value="coffee">
-  <label for="coffee">Coffee</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="donuts" value="donuts">
-  <label for="donuts">Donuts</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="ethnicmarkets" value="ethnicmarkets">
-  <label for="ethnicmarkets">Ethnicmarkets</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="french" value="french">
-  <label for="french">French</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="indpak" value="indpak">
-  <label for="indpak">Indpak</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="italian" value="italian">
-  <label for="italian">Italian</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="japanese" value="japanese">
-  <label for="japanese">Japanese</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="mexican" value="mexican">
-  <label for="mexican">Mexican</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="newamerican" value="newamerican">
-  <label for="newamerican">NewAmerican</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="nightlife" value="nightlife">
-  <label for="nightlife">Nightlife</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="pizza" value="pizza">
-  <label for="pizza">Pizza</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="restaurant" value="restaurant">
-  <label for="restaurant">Resturant</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="sandwiches" value="sandwiches">
-  <label for="sandwiches">Sandwiches</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="shopping" value="shopping">
-  <label for="shopping">Shopping</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="sushi" value="sushi">
-  <label for="sushi">Sushi</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="thai" value="thai">
-  <label for="thai">Thai</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="vietnamese" value="vietnamese">
-  <label for="vietnamese">Vietnamese</label>
-</div>
+
+  <input type="checkbox" class="checkbox" name="active" value="active">Active
+  <input type="checkbox" class="checkbox" name="arts" value="arts">Art
+  <input type="checkbox" class="checkbox" name="bakeries" value="bakeries">Bakeries
+  <input type="checkbox" class="checkbox" name="cafes" value="cafes">Cafes
+  <input type="checkbox" class="checkbox" name="chinese" value="chinese">Chinese
+  <input type="checkbox" class="checkbox" name="coffee" value="coffee">Coffee
+  <input type="checkbox" class="checkbox" name="donuts" value="donuts">Donuts
+  <input type="checkbox" class="checkbox" name="ethnicmarkets" value="ethnicmarkets">Ethnicmarkets
+  <input type="checkbox" class="checkbox" name="french" value="french">French
+  <input type="checkbox" class="checkbox" name="indpak" value="indpak">Indpak
+  <input type="checkbox" class="checkbox" name="italian" value="italian">Italian
+  <input type="checkbox" class="checkbox" name="japanese" value="japanese">Japanese
+  <input type="checkbox" class="checkbox" name="mexican" value="mexican">Mexican
+  <input type="checkbox" class="checkbox" name="newamerican" value="newamerican">NewAmerican
+  <input type="checkbox" class="checkbox" name="nightlife" value="nightlife">NightLife
+  <input type="checkbox" class="checkbox" name="pizza" value="pizza">Pizza
+  <input type="checkbox" class="checkbox" name="restaurant" value="restaurant">Resturant
+  <input type="checkbox" class="checkbox" name="sandwiches" value="sandwiches">Sandwiches
+  <input type="checkbox" class="checkbox" name="shopping" value="shopping">Shopping
+  <input type="checkbox" class="checkbox" name="sushi" value="sushi">Sushi
+  <input type="checkbox" class="checkbox" name="thai" value="thai">Thai
+  <input type="checkbox" class="checkbox" name="vietnamese" value="vietnamese">Vietnamese
+<button type="button" name="button">Filter</button>
 
   <script id="code">
 
@@ -218,7 +154,49 @@
         map.call(plotZoom.transform, d3.zoomIdentity);
 
 
-    };
+
+
+        //checkbox filtering
+          var checked=[];
+        d3.select("button").on("click",function(){
+            var boxes = d3.selectAll("input.checkbox:checked");
+            boxes.each(function(){
+              checked.push(this.value)
+            });
+            console.log(checked)
+            //update new data
+            newdata = []
+            checked.forEach((d, i) => {
+              newdata.push(yelpData.filter((d)=>{return d['category']===checked[i]}))
+            });
+            newdata = newdata.flat()
+
+              console.log(newdata.flat())
+              updateMap(newdata)
+              });
+
+              function updateMap(data){
+                var pitts = topojson.feature(pittsData, pittsData.objects.Neighborhoods_);
+                var pittsProjection = d3.geoMercator().fitSize([mapWidth, mapHeight], pitts);
+                var pittsPath = d3.geoPath().projection(pittsProjection);
+
+                //update map
+                data.forEach( d => {
+                  d.Position = pittsProjection( [d.longitude, d.latitude]);
+                });
+                let circles=chartArea.selectAll("circle").data(data)
+                  .join("circle")
+                  .attr("r", 5)
+                  .attr("fill", "orange")
+                  .attr("opacity", 0.5)
+                  .attr("cx", d => d.Position[0])
+                  .attr("cy", d => d.Position[1]);
+              };
+
+
+
+
+  };
 
 
 
