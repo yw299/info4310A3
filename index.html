@@ -275,7 +275,9 @@
               //uncheck boxes
               function uncheckAll(){
                 d3.selectAll('input').property('checked',false);
+                d3.select("#menu span").remove()
               };
+
 
         //clear checkbox
         d3.select(".clear").on("click",function(){
