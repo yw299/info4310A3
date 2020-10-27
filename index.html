@@ -8,6 +8,21 @@
   <script src="https://d3js.org/topojson.v2.min.js"></script>
 
   <style>
+
+  #container {
+    display: flex;
+  }
+
+  #sidebar {
+    display: flex;
+  }
+
+  .sidediv {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+  }
+
   select {
         display: block;
         background-color: #E5E5E5;
@@ -43,103 +58,74 @@
 <body>
 
   <h1>Pittsburgh Restaurant Reviews</h1>
+<<<<<<< HEAD
 <svg id="canvas" width="1200" height="900">
   <g id="map" width="900" height="900"></g>
   <g id="minimap" width="300" height="300" transform="translate(899,1)">
         <rect x="0" y="0" width="300" height="300" stroke="black" stroke-width="1" fill="white" opacity="1"/>
   </g>
 </svg>
+=======
+
+>>>>>>> 07fe0ccc68588627c975be03c64a0e99bcdfc669
+
+  <div id="container">
+
+    <div id="mapdiv">
+      <svg id="map" width="1200" height="900"></svg>
+    </div>
+
+    <div id="sidebar">
 
 
-<p>Choose restaurant category</p>
-<div class="category">
-  <input type="checkbox" name="active" value="active">
-  <label for="active">Active</label>
+    <div id="filters" class="sidediv">
+      <h3>Choose a Restuarant Category</h3>
+
+      <span class="check"><input type="checkbox" class="checkbox" name="active" value="active">Active</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="arts" value="arts">Art</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="bakeries" value="bakeries">Bakeries</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="cafes" value="cafes">Cafes</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="chinese" value="chinese">Chinese</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="coffee" value="coffee">Coffee</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="donuts" value="donuts">Donuts</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="ethnicmarkets" value="ethnicmarkets">Ethnicmarkets</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="french" value="french">French</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="indpak" value="indpak">Indpak</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="italian" value="italian">Italian</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="japanese" value="japanese">Japanese</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="mexican" value="mexican">Mexican</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="newamerican" value="newamerican">NewAmerican</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="nightlife" value="nightlife">NightLife</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="pizza" value="pizza">Pizza</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="restaurant" value="restaurant">Resturant</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="sandwiches" value="sandwiches">Sandwiches</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="shopping" value="shopping">Shopping</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="sushi" value="sushi">Sushi</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="thai" value="thai">Thai</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="vietnamese" value="vietnamese">Vietnamese</span>
+
+
+      <h3>Choose Popular Neighborhood</h3>
+      <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Downtown" value="Downtown">Downtown</span>
+      <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Lawrenceville" value="Lawrenceville">Lawrenceville</span>
+      <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Oakland" value="Oakland">Oakland</span>
+      <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="South Side" value="South Side">South Side</span>
+      <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Squirrel Hill" value="Squirrel Hill">Squirrel Hill</span>
+      <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Strip District" value="Strip District">Strip District</span>
+
+
+      <button type="button" name="button">Filter</button>
+      <button type="button" name="button" class="clear">Clear</button>
+
+    </div>
+    <h3>Restaurants</h3>
+    <div id="menu" class="sidediv">
+    </div>
+
+  </div>
+
 </div>
-<div class="category">
-  <input type="checkbox" name="arts" value="arts">
-  <label for="arts">Arts</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="bakeries" value="bakeries">
-  <label for="bakeries">Bakeries</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="cafes" value="cafes">
-  <label for="cafes">Cafes</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="chinese" value="chinese">
-  <label for="chinese">Chinese</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="coffee" value="coffee">
-  <label for="coffee">Coffee</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="donuts" value="donuts">
-  <label for="donuts">Donuts</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="ethnicmarkets" value="ethnicmarkets">
-  <label for="ethnicmarkets">Ethnicmarkets</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="french" value="french">
-  <label for="french">French</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="indpak" value="indpak">
-  <label for="indpak">Indpak</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="italian" value="italian">
-  <label for="italian">Italian</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="japanese" value="japanese">
-  <label for="japanese">Japanese</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="mexican" value="mexican">
-  <label for="mexican">Mexican</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="newamerican" value="newamerican">
-  <label for="newamerican">NewAmerican</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="nightlife" value="nightlife">
-  <label for="nightlife">Nightlife</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="pizza" value="pizza">
-  <label for="pizza">Pizza</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="restaurant" value="restaurant">
-  <label for="restaurant">Resturant</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="sandwiches" value="sandwiches">
-  <label for="sandwiches">Sandwiches</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="shopping" value="shopping">
-  <label for="shopping">Shopping</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="sushi" value="sushi">
-  <label for="sushi">Sushi</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="thai" value="thai">
-  <label for="thai">Thai</label>
-</div>
-<div class="category">
-  <input type="checkbox" name="vietnamese" value="vietnamese">
-  <label for="vietnamese">Vietnamese</label>
-</div>
+
 
   <script id="code">
 
@@ -149,6 +135,7 @@
     const mapHeight = map.attr("height");
     const chartArea = map.append("g");
 
+<<<<<<< HEAD
     // make the minimap
     const minimap = d3.select("svg g#minimap");
     const minimapWidth = minimap.attr("width");
@@ -165,6 +152,10 @@
                                     .attr("y",0)
                                     .attr("width",mapWidth)
                                     .attr("height",mapHeight);
+=======
+    const menu = d3.select("#menu");
+
+>>>>>>> 07fe0ccc68588627c975be03c64a0e99bcdfc669
 
     map.attr("clip-path","url(#chartClip)");
 
@@ -185,10 +176,6 @@
       const pittsData = await d3.json("pittsburgh_neighborhoods.json");
       const yelpData = await d3.csv("yelp_pittsburgh.csv");
 
-      // DELETE LATER
-      console.log(pittsData);
-      console.log(yelpData);
-
       // Map Projection
       var pitts = topojson.feature(pittsData, pittsData.objects.Neighborhoods_);
       var pittsProjection = d3.geoMercator().fitSize([mapWidth, mapHeight], pitts);
@@ -205,6 +192,7 @@
         d.Position = pittsProjection( [d.longitude, d.latitude]);
       });
 
+<<<<<<< HEAD
       console.log(yelpData);
 
       //minimap Restaurant position
@@ -214,12 +202,15 @@
 
       console.log(yelpData);
 
+=======
+>>>>>>> 07fe0ccc68588627c975be03c64a0e99bcdfc669
       // Drawing Map Projection
       chartArea.selectAll("path.neighborhood").data(pitts.features)
           .join("path")
           .attr("class", "neighborhood")
           .attr("d", pittsPath);
 
+<<<<<<< HEAD
 
       // Drawing MiniMap Projection
       minimapArea.selectAll("path.neighborhood").data(pitts.features)
@@ -245,7 +236,49 @@
       .attr("opacity", 0.5)
       .attr("cx", d => d.mini_Position[0])
       .attr("cy", d => d.mini_Position[1]);
+=======
+>>>>>>> 07fe0ccc68588627c975be03c64a0e99bcdfc669
 
+      // Drawing Resturant Positions
+      let circles = chartArea.selectAll("circle").data(yelpData)
+                       .join("circle")
+                       .attr("r", 5)
+                       .attr("fill", "orange")
+                       .attr("opacity", 0.5)
+                       .attr("cx", d => d.Position[0])
+                       .attr("cy", d => d.Position[1]);
+
+      // Tooltip
+      let tooltipWidth = 160;
+      let tooltipHeight = 100;
+
+      let tooltip = chartArea.append("g")
+        .attr("class", "tooltip")
+        .attr("visibility", "hidden");
+
+      tooltip.append("rect")
+        .attr("fill", "#ffe0ad")
+        .attr("opacity", 1)
+        .attr("width", tooltipWidth)
+        .attr("height", tooltipHeight);
+
+      let txt = tooltip.append("text")
+        .attr("text-anchor","middle")
+        .attr("alignment-baseline","hanging")
+        .attr("x", tooltipWidth / 2.0)
+        .attr("y", 4);
+
+      let txt2 = tooltip.append("text")
+        .attr("text-anchor","middle")
+        .attr("alignment-baseline","hanging")
+        .attr("x", tooltipWidth / 2.0)
+        .attr("y", 24);
+
+      let txt3 = tooltip.append("text")
+        .attr("text-anchor","middle")
+        .attr("alignment-baseline","hanging")
+        .attr("x", tooltipWidth / 2.0)
+        .attr("y", 44);
 
         //zoom
         let zoomExtent = [[0,0],[mapWidth,mapHeight]];
@@ -314,10 +347,34 @@
 
         }
 
+        map.call(plotZoom.transform, d3.zoomIdentity);
 
 
 
 
+        //checkbox filtering by category
+        //by default if boxes and boxes_neighborhood length  === 0, then newdata = yelpData
+
+        d3.select("button").on("click",function(){
+            var checked=[];
+            var checked_neighborhood=[]
+            var boxes = d3.selectAll("input.checkbox:checked");
+            var boxes_neighborhood = d3.selectAll("input.neighborhoodcheckbox:checked");
+            boxes.each(function(){
+              checked.push(this.value)
+            });
+            boxes_neighborhood.each(function(){
+              checked_neighborhood.push(this.value)
+            });
+            console.log(checked)
+            console.log(checked_neighborhood)
+            //update new data
+            // newdata = []
+            newdata = yelpData.filter((d)=>{
+              let passed_category_filter = false;
+              let passed_neighborhood_filter = false;
+
+<<<<<<< HEAD
 
         function brushed( {sourceEvent, selection} ) {
 
@@ -349,9 +406,105 @@
 
 
     map.call(plotZoom.transform, d3.zoomIdentity);
+=======
+              if (checked.length === 0){
+                passed_category_filter = true;
+              } else {
+                checked.forEach((category, i) => {
+                  passed_category_filter = passed_category_filter || d['category']===category
+                });
+
+              }
+
+              if (checked_neighborhood.length ===0) {
+                passed_neighborhood_filter = true;
+              } else {
+                checked_neighborhood.forEach((neighborhood, i) => {
+                  passed_neighborhood_filter = passed_neighborhood_filter || d['neighborhood']===neighborhood
+                });
+
+              }
 
 
-    };
+            return passed_category_filter && passed_neighborhood_filter;
+            })
+              updateMap(newdata)
+              });
+
+              //uncheck boxes
+              function uncheckAll(){
+                d3.selectAll('input').property('checked',false);
+                d3.select("#menu").remove()
+              };
+
+
+        //clear checkbox
+        d3.select(".clear").on("click",function(){
+          uncheckAll()
+          updateMap(yelpData)
+        });
+
+              //update map function
+              function updateMap(data){
+                var pitts = topojson.feature(pittsData, pittsData.objects.Neighborhoods_);
+                var pittsProjection = d3.geoMercator().fitSize([mapWidth, mapHeight], pitts);
+                var pittsPath = d3.geoPath().projection(pittsProjection);
+
+                //update map
+                data.forEach( d => {
+                  d.Position = pittsProjection( [d.longitude, d.latitude]);
+                });
+
+                let circles = chartArea.selectAll("circle").data(data)
+                  .join("circle")
+                  .attr("r", 5)
+                  .attr("fill", "orange")
+                  .attr("opacity", 0.5)
+                  .attr("cx", d => d.Position[0])
+                  .attr("cy", d => d.Position[1]);
+
+
+
+
+              //hover
+                data.forEach(function(d, i) {
+                  d3.select("#menu")
+                  .append("span")
+                  .text(d.name)
+                  .on("mouseover", function() {
+
+                    d3.select(this)
+                      .style("color", "orange");
+>>>>>>> 07fe0ccc68588627c975be03c64a0e99bcdfc669
+
+                    circles.attr("r", circleD => {
+                      if (circleD["name"] == d.name) {
+                        return 8;
+                      } else {
+                        return 5;
+                      };
+                    });
+
+
+                    txt.text(d.name);
+                    txt2.text(d.category);
+                    txt3.text(d.rating);
+
+                    tooltip.style("visibility","visible")
+                      .attr("transform", "translate(" + (d.Position[0] + 8) +", " + (d.Position[1] + 9) +")");
+
+                  })
+                  .on("mouseout", function() {
+                    d3.select(this)
+                    .style("color", "black");
+
+                    circles.attr("r", 5);
+                  });
+                })
+
+              };
+
+  };
 
 
 
