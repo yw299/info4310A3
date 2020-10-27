@@ -404,6 +404,7 @@
             return passed_category_filter && passed_neighborhood_filter;
             })
               updateMap(newdata)
+              updateMiniMap(newdata)
               });
 
               //uncheck boxes
@@ -417,6 +418,7 @@
         d3.select(".clear").on("click",function(){
           uncheckAll()
           updateMap(yelpData)
+          updateMiniMap(yelpData)
         });
 
               //update map function
@@ -476,6 +478,26 @@
                   });
                 })
 
+              };
+
+
+              function updateMiniMap(data){
+                var pitts_mini = topojson.feature(pittsData, pittsData.objects.Neighborhoods_);
+                var pittsProjection_mini = d3.geoMercator().fitSize([minimapWidth, minimapHeight], pitts_mini);
+                var pittsPath_mini = d3.geoPath().projection(pittsProjection_mini);
+
+                data.forEach( d => {
+                  d.mini_Position = pittsProjection_mini( [d.longitude, d.latitude]);
+                });
+
+
+                let circles_mini=minimapArea.selectAll("circle").data(data)
+                  .join("circle")
+                  .attr("r", 2)
+                  .attr("fill", "orange")
+                  .attr("opacity", 0.5)
+                  .attr("cx", d => d.mini_Position[0])
+                  .attr("cy", d => d.mini_Position[1]);
               };
 
   };
