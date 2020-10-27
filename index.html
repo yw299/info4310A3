@@ -89,7 +89,7 @@
       <span class="check"><input type="checkbox" class="checkbox" name="vietnamese" value="vietnamese">Vietnamese</span>
 
 
-      <p>Choose Popular Neighborhood</p>
+      <h3>Choose Popular Neighborhood</h3>
       <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Downtown" value="Downtown">Downtown</span>
       <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Lawrenceville" value="Lawrenceville">Lawrenceville</span>
       <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Oakland" value="Oakland">Oakland</span>
@@ -102,9 +102,8 @@
       <button type="button" name="button" class="clear">Clear</button>
 
     </div>
-
+    <h3>Restaurants</h3>
     <div id="menu" class="sidediv">
-      <h3>Restaurants</h3>
     </div>
 
   </div>
@@ -275,7 +274,7 @@
               //uncheck boxes
               function uncheckAll(){
                 d3.selectAll('input').property('checked',false);
-                d3.select("#menu span").remove()
+                d3.select("#menu").remove()
               };
 
 
