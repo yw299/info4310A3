@@ -58,16 +58,13 @@
 <body>
 
   <h1>Pittsburgh Restaurant Reviews</h1>
-<<<<<<< HEAD
 <svg id="canvas" width="1200" height="900">
   <g id="map" width="900" height="900"></g>
   <g id="minimap" width="300" height="300" transform="translate(899,1)">
         <rect x="0" y="0" width="300" height="300" stroke="black" stroke-width="1" fill="white" opacity="1"/>
   </g>
 </svg>
-=======
 
->>>>>>> 07fe0ccc68588627c975be03c64a0e99bcdfc669
 
   <div id="container">
 
@@ -135,7 +132,6 @@
     const mapHeight = map.attr("height");
     const chartArea = map.append("g");
 
-<<<<<<< HEAD
     // make the minimap
     const minimap = d3.select("svg g#minimap");
     const minimapWidth = minimap.attr("width");
@@ -152,10 +148,8 @@
                                     .attr("y",0)
                                     .attr("width",mapWidth)
                                     .attr("height",mapHeight);
-=======
     const menu = d3.select("#menu");
 
->>>>>>> 07fe0ccc68588627c975be03c64a0e99bcdfc669
 
     map.attr("clip-path","url(#chartClip)");
 
@@ -192,7 +186,7 @@
         d.Position = pittsProjection( [d.longitude, d.latitude]);
       });
 
-<<<<<<< HEAD
+
       console.log(yelpData);
 
       //minimap Restaurant position
@@ -202,15 +196,12 @@
 
       console.log(yelpData);
 
-=======
->>>>>>> 07fe0ccc68588627c975be03c64a0e99bcdfc669
       // Drawing Map Projection
       chartArea.selectAll("path.neighborhood").data(pitts.features)
           .join("path")
           .attr("class", "neighborhood")
           .attr("d", pittsPath);
 
-<<<<<<< HEAD
 
       // Drawing MiniMap Projection
       minimapArea.selectAll("path.neighborhood").data(pitts.features)
@@ -236,17 +227,8 @@
       .attr("opacity", 0.5)
       .attr("cx", d => d.mini_Position[0])
       .attr("cy", d => d.mini_Position[1]);
-=======
->>>>>>> 07fe0ccc68588627c975be03c64a0e99bcdfc669
 
-      // Drawing Resturant Positions
-      let circles = chartArea.selectAll("circle").data(yelpData)
-                       .join("circle")
-                       .attr("r", 5)
-                       .attr("fill", "orange")
-                       .attr("opacity", 0.5)
-                       .attr("cx", d => d.Position[0])
-                       .attr("cy", d => d.Position[1]);
+
 
       // Tooltip
       let tooltipWidth = 160;
@@ -298,14 +280,7 @@
      // then add the zoom handler
     map.call(plotZoom);
 
-    //scale for minimap
-    // const minimapXScale = d3.scaleLinear().domain([xScale.invert(translateExtent[0][0]),
-    //                                                xScale.invert(translateExtent[1][0])])
-    //                                .range([0, minimapWidth]);
-    //
-    // const minimapYScale = d3.scaleLinear().domain([yScale.invert(translateExtent[1][1]),
-    //                                                yScale.invert(translateExtent[0][1])])
-    //                                .range([minimapHeight, 0]);
+
 
 
 
@@ -347,6 +322,37 @@
 
         }
 
+
+
+        function brushed( {sourceEvent, selection} ) {
+
+          // // this will go into an infinite loop if you don't catch the things triggered by the zoom
+          if (sourceEvent === undefined) {
+            return;
+          }
+          //
+          let transform = d3.zoomTransform(chartArea.node());
+          // console.log(transform)
+
+        // console.log(selection)
+                let upperleft=pittsProjection_mini.invert([selection[0][0],selection[0][1]])
+                let lowerright=pittsProjection_mini.invert([selection[1][0],selection[1][1]])
+                // console.log(upperleft)
+                // console.log(lowerright)
+                function getScreenCoords(x, y,transform) { 
+                    var xn = (x-transform.x)/transform.k ; 
+                     var yn = (y-transform.y)/transform.k ; 
+                      return [xn, yn]; }
+
+
+           transform.x = selection[0][0]-(pittsProjection(upperleft)[0])*transform.k;
+           transform.y = selection[0][1]-(pittsProjection(upperleft)[1])*transform.k;
+
+          //
+        map.call(plotZoom.transform, transform);
+        }
+
+
         map.call(plotZoom.transform, d3.zoomIdentity);
 
 
@@ -374,39 +380,8 @@
               let passed_category_filter = false;
               let passed_neighborhood_filter = false;
 
-<<<<<<< HEAD
-
-        function brushed( {sourceEvent, selection} ) {
-
-          // // this will go into an infinite loop if you don't catch the things triggered by the zoom
-          if (sourceEvent === undefined) {
-            return;
-          }
-          //
-          let transform = d3.zoomTransform(chartArea.node());
-          // console.log(transform)
-
-// console.log(selection)
-                let upperleft=pittsProjection_mini.invert([selection[0][0],selection[0][1]])
-                let lowerright=pittsProjection_mini.invert([selection[1][0],selection[1][1]])
-                // console.log(upperleft)
-                // console.log(lowerright)
-                function getScreenCoords(x, y,transform) { 
-                    var xn = (x-transform.x)/transform.k ; 
-                     var yn = (y-transform.y)/transform.k ; 
-                      return [xn, yn]; }
 
 
-           transform.x = selection[0][0]-(pittsProjection(upperleft)[0])*transform.k;
-           transform.y = selection[0][1]-(pittsProjection(upperleft)[1])*transform.k;
-
-          //
-    map.call(plotZoom.transform, transform);
-        }
-
-
-    map.call(plotZoom.transform, d3.zoomIdentity);
-=======
               if (checked.length === 0){
                 passed_category_filter = true;
               } else {
@@ -475,7 +450,6 @@
 
                     d3.select(this)
                       .style("color", "orange");
->>>>>>> 07fe0ccc68588627c975be03c64a0e99bcdfc669
 
                     circles.attr("r", circleD => {
                       if (circleD["name"] == d.name) {
