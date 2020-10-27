@@ -170,6 +170,13 @@
       const pittsData = await d3.json("pittsburgh_neighborhoods.json");
       const yelpData = await d3.csv("yelp_pittsburgh.csv");
 
+
+      // make an interactive "surface" at the top of the plot area
+     chartArea.append("rect").attr("x",0).attr("y",0)
+                       .attr("width",mapWidth).attr("height",mapHeight)
+                       .attr("fill","none")
+                       .style("pointer-events","all");
+
       // Map Projection
       var pitts = topojson.feature(pittsData, pittsData.objects.Neighborhoods_);
       var pittsProjection = d3.geoMercator().fitSize([mapWidth, mapHeight], pitts);
@@ -272,11 +279,7 @@
                        .on("zoom", plotZoomed);
 
 
-       // make an interactive "surface" at the top of the plot area
-     chartArea.append("rect").attr("x",0).attr("y",0)
-                        .attr("width",mapWidth).attr("height",mapHeight)
-                        .attr("fill","none")
-                        .style("pointer-events","all");
+
      // then add the zoom handler
     map.call(plotZoom);
 
