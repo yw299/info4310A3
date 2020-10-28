@@ -43,13 +43,13 @@
   }
 
   .rows span {
-    margin: 4px;
+    margin: 4px 0;
   }
 
   .column {
     display: flex;
     flex-direction: column;
-    margin-right: 20px;
+    flex: 1;
   }
 
   select {
@@ -270,15 +270,10 @@
         d.Position = pittsProjection( [d.longitude, d.latitude]);
       });
 
-
-      console.log(yelpData);
-
       //minimap Restaurant position
       yelpData.forEach( d => {
         d.mini_Position = pittsProjection_mini( [d.longitude, d.latitude]);
       });
-
-      console.log(yelpData);
 
       // Drawing Map Projection
       chartArea.selectAll("path.neighborhood").data(pitts.features)
@@ -302,25 +297,27 @@
         .attr("y", d => d.Position[1])
         .attr("height", 50)
         .attr("width", 50)
-        .on("mouseenter", function() {
+        .on("mouseenter", HandleMouseEnter)
+        .on("mouseout", HandleMouseOut);
 
+      function HandleMouseEnter() {
 
+        let dot = d3.select(this);
 
-          let dot = d3.select(this);
+        dot.attr("xlink:href", "marker2.png");
 
-          dot.attr("xlink:href", "marker2.png");
+        rimg.attr("xlink:href", dot.datum().image_url);
 
-          x_translate = 125;
-          y_translate = 46;
+        x_translate = 125;
+        y_translate = 46;
 
-          tooltip.style("visibility","visible")
-            .attr("transform", "translate(" + (dot.datum().Position[0] - x_translate) +", " + (dot.datum().Position[1] + y_translate) +")");
+        tooltip.style("visibility","visible")
+          .attr("transform", "translate(" + (dot.datum().Position[0] - x_translate) +", " + (dot.datum().Position[1] + y_translate) +")");
 
-
-          txt.text(dot.datum().name);
+        txt.text(dot.datum().name);
           var category = (dot.datum().category).toUpperCase();;
           txt2.text(category);
-          if (dot.datum().rating == 1) {
+        if (dot.datum().rating == 1) {
             txt3.text("★");
           } else if (dot.datum().rating == 2) {
             txt3.text("★ ★");
@@ -335,20 +332,15 @@
           } else {
             txt3.text("★ ★ ★ ★ ★");
           };
+        }
 
-          rimg.attr("xlink:href", dot.datum().image_url);
-
-        })
-        .on("mouseout", function() {
-
+        function HandleMouseOut() {
           let dot = d3.select(this);
 
           dot.attr("xlink:href", "marker.png");
 
           tooltip.style("visibility","hidden");
-
-        });
-
+        }
 
         // Tooltip
         let tooltipWidth = 300;
@@ -389,6 +381,112 @@
           .attr("height", 45)
           .attr("x", 70)
           .attr("y", 40);
+
+
+          //checkbox filtering by category
+          //by default if boxes and boxes_neighborhood length  === 0, then newdata = yelpData
+
+          d3.select("button").on("click",function(){
+              var checked=[];
+              var checked_neighborhood=[]
+              var boxes = d3.selectAll("input.checkbox:checked");
+              var boxes_neighborhood = d3.selectAll("input.neighborhoodcheckbox:checked");
+              boxes.each(function(){
+                checked.push(this.value)
+              });
+              boxes_neighborhood.each(function(){
+                checked_neighborhood.push(this.value)
+              });
+              console.log(checked)
+              console.log(checked_neighborhood)
+              //update new data
+              // newdata = []
+              newdata = yelpData.filter((d)=>{
+                let passed_category_filter = false;
+                let passed_neighborhood_filter = false;
+
+
+
+                if (checked.length === 0){
+                  passed_category_filter = true;
+                } else {
+                  checked.forEach((category, i) => {
+                    passed_category_filter = passed_category_filter || d['category']===category
+                  });
+
+                }
+
+                if (checked_neighborhood.length ===0) {
+                  passed_neighborhood_filter = true;
+                } else {
+                  checked_neighborhood.forEach((neighborhood, i) => {
+                    passed_neighborhood_filter = passed_neighborhood_filter || d['neighborhood']===neighborhood
+                  });
+
+                }
+
+
+              return passed_category_filter && passed_neighborhood_filter;
+              })
+                updateMap(newdata)
+                updateMiniMap(newdata)
+                });
+
+                //uncheck boxes
+                function uncheckAll(){
+                  d3.selectAll('input').property('checked',false);
+                  d3.select("#menu").remove()
+                };
+
+
+          //clear checkbox
+          d3.select(".clear").on("click",function(){
+            uncheckAll()
+            updateMap(yelpData)
+            updateMiniMap(yelpData)
+          });
+
+                //update map function
+                function updateMap(data){
+                  var pitts = topojson.feature(pittsData, pittsData.objects.Neighborhoods_);
+                  var pittsProjection = d3.geoMercator().fitSize([900, mapHeight], pitts);
+                  var pittsPath = d3.geoPath().projection(pittsProjection);
+
+                  //update map
+                  data.forEach( d => {
+                    d.Position = pittsProjection( [d.longitude, d.latitude]);
+                  });
+
+                  let circles = chartArea.selectAll("image").data(data)
+                    .join("image")
+                    .attr("xlink:href", "marker.png")
+                    .attr("x", d => d.Position[0])
+                    .attr("y", d => d.Position[1])
+                    .attr("height", 50)
+                    .attr("width", 50)
+                    .on("mouseenter", HandleMouseEnter)
+                    .on("mouseout", HandleMouseOut);
+                };
+
+                function updateMiniMap(data){
+                  var pitts_mini = topojson.feature(pittsData, pittsData.objects.Neighborhoods_);
+                  var pittsProjection_mini = d3.geoMercator().fitSize([minimapWidth, minimapHeight], pitts_mini);
+                  var pittsPath_mini = d3.geoPath().projection(pittsProjection_mini);
+
+                  data.forEach( d => {
+                    d.mini_Position = pittsProjection_mini( [d.longitude, d.latitude]);
+                  });
+
+
+                  let circles_mini=minimapArea.selectAll("circle").data(data)
+                    .join("circle")
+                    .attr("r", 2)
+                    .attr("fill", "#fc6e61")
+                    .attr("opacity", 0.5)
+                    .attr("cx", d => d.mini_Position[0])
+                    .attr("cy", d => d.mini_Position[1]);
+                };
+
 
 
     // Drawing Resturant Positions on minimap
@@ -520,112 +618,8 @@
 
 
 
-        //checkbox filtering by category
-        //by default if boxes and boxes_neighborhood length  === 0, then newdata = yelpData
-
-        d3.select("button").on("click",function(){
-            var checked=[];
-            var checked_neighborhood=[]
-            var boxes = d3.selectAll("input.checkbox:checked");
-            var boxes_neighborhood = d3.selectAll("input.neighborhoodcheckbox:checked");
-            boxes.each(function(){
-              checked.push(this.value)
-            });
-            boxes_neighborhood.each(function(){
-              checked_neighborhood.push(this.value)
-            });
-            console.log(checked)
-            console.log(checked_neighborhood)
-            //update new data
-            // newdata = []
-            newdata = yelpData.filter((d)=>{
-              let passed_category_filter = false;
-              let passed_neighborhood_filter = false;
-
-
-
-              if (checked.length === 0){
-                passed_category_filter = true;
-              } else {
-                checked.forEach((category, i) => {
-                  passed_category_filter = passed_category_filter || d['category']===category
-                });
-
-              }
-
-              if (checked_neighborhood.length ===0) {
-                passed_neighborhood_filter = true;
-              } else {
-                checked_neighborhood.forEach((neighborhood, i) => {
-                  passed_neighborhood_filter = passed_neighborhood_filter || d['neighborhood']===neighborhood
-                });
-
-              }
-
-
-            return passed_category_filter && passed_neighborhood_filter;
-            })
-              updateMap(newdata)
-              updateMiniMap(newdata)
-              });
-
-              //uncheck boxes
-              function uncheckAll(){
-                d3.selectAll('input').property('checked',false);
-                d3.select("#menu").remove()
-              };
-
-
-        //clear checkbox
-        d3.select(".clear").on("click",function(){
-          uncheckAll()
-          updateMap(yelpData)
-          updateMiniMap(yelpData)
-        });
-
-              //update map function
-              function updateMap(data){
-                var pitts = topojson.feature(pittsData, pittsData.objects.Neighborhoods_);
-                var pittsProjection = d3.geoMercator().fitSize([900, mapHeight], pitts);
-                var pittsPath = d3.geoPath().projection(pittsProjection);
-
-                //update map
-                data.forEach( d => {
-                  d.Position = pittsProjection( [d.longitude, d.latitude]);
-                });
-
-                let circles = chartArea.selectAll("image").data(data)
-                  .join("image")
-                  .attr("xlink:href", "marker.png")
-                  .attr("x", d => d.Position[0])
-                  .attr("y", d => d.Position[1])
-                  .attr("height", 50)
-                  .attr("width", 50);
-              };
-
-
-              function updateMiniMap(data){
-                var pitts_mini = topojson.feature(pittsData, pittsData.objects.Neighborhoods_);
-                var pittsProjection_mini = d3.geoMercator().fitSize([minimapWidth, minimapHeight], pitts_mini);
-                var pittsPath_mini = d3.geoPath().projection(pittsProjection_mini);
-
-                data.forEach( d => {
-                  d.mini_Position = pittsProjection_mini( [d.longitude, d.latitude]);
-                });
-
-
-                let circles_mini=minimapArea.selectAll("circle").data(data)
-                  .join("circle")
-                  .attr("r", 2)
-                  .attr("fill", "#fc6e61")
-                  .attr("opacity", 0.5)
-                  .attr("cx", d => d.mini_Position[0])
-                  .attr("cy", d => d.mini_Position[1]);
-              };
 
   };
-
-
 
     // RequestData call
 
