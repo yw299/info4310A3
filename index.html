@@ -9,18 +9,47 @@
 
   <style>
 
-  /* #container {
+  body {
+    background-color: #f9f9f9;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  h1, h2, h3, p, span {
+    font-family: Arial, sans-serif;
+  }
+
+  #container {
     display: flex;
-  } */
+    justify-content: center;
+  }
 
   #sidebar {
     display: flex;
+    flex-direction: column;
+    margin: 10px 25px;
+    width: 300px;
   }
 
   .sidediv {
     display: flex;
     flex-direction: column;
-    margin: 10px;
+  }
+
+  .rows {
+    display: flex;
+  }
+
+  .rows span {
+    margin: 4px;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
   }
 
   select {
@@ -34,13 +63,45 @@
         padding:10px;
     }
 
+  button {
+    margin: 5px;
+    font-size: 18px;
+    border-radius: 8px;
+    padding: 10px;
+  }
+
+  #filter_button {
+    margin-top: 25px;
+    border: none;
+    background-color: #0f133b;
+    color: #fff;
+  }
+
+  #filter_button:hover {
+    background-color: #292d5e;
+    cursor: pointer;
+  }
+
+  #clear_button {
+    color: #0f133b;
+    border: 3px #0f133b solid;
+    background-color: #fff;
+  }
+
+  #clear_button:hover {
+    background-color: #eaeaea;
+    cursor: pointer;
+  }
+
   #button{
-        margin-top: -20px;
-        margin-left:40px;
-    }
+      margin-top: -20px;
+      margin-left:40px;
+  }
+
+
   .neighborhood {
-    fill: #f9f9f9;
-    stroke: #bdbdbd;
+    fill: #badbc3;
+    stroke: #f9f9f9;
     stroke-width: 1px;
   }
 
@@ -62,56 +123,80 @@
 <body>
 
   <h1>Pittsburgh Restaurant Reviews</h1>
-<svg id="canvas" width="1200" height="900">
-  <g id="map" width="1200" height="900"></g>
-  <g id="minimap" width="300" height="300" transform="translate(899,1)">
-        <rect x="0" y="0" width="300" height="300" stroke="black" stroke-width="1" fill="white" opacity="1"/>
-  </g>
-</svg>
 
-    <div id="sidebar">
+<div id="container">
 
+  <svg id="canvas" width="1200" height="900">
+    <g id="map" width="1200" height="900"></g>
+    <g id="minimap" width="300" height="300" transform="translate(899,1)">
+          <rect x="0" y="0" width="300" height="300" stroke="black" stroke-width="1" fill="white" opacity="1"/>
+    </g>
+  </svg>
 
-    <div id="filters" class="sidediv">
-      <h3>Choose a Restuarant Category</h3>
+  <div id="sidebar">
 
-      <span class="check"><input type="checkbox" class="checkbox" name="active" value="active">Active</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="arts" value="arts">Art</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="bakeries" value="bakeries">Bakeries</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="cafes" value="cafes">Cafes</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="chinese" value="chinese">Chinese</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="coffee" value="coffee">Coffee</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="donuts" value="donuts">Donuts</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="ethnicmarkets" value="ethnicmarkets">Ethnicmarkets</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="french" value="french">French</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="indpak" value="indpak">Indpak</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="italian" value="italian">Italian</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="japanese" value="japanese">Japanese</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="mexican" value="mexican">Mexican</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="newamerican" value="newamerican">NewAmerican</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="nightlife" value="nightlife">NightLife</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="pizza" value="pizza">Pizza</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="restaurant" value="restaurant">Resturant</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="sandwiches" value="sandwiches">Sandwiches</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="shopping" value="shopping">Shopping</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="sushi" value="sushi">Sushi</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="thai" value="thai">Thai</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="vietnamese" value="vietnamese">Vietnamese</span>
+    <div class="blurb">
 
-
-      <h3>Choose Popular Neighborhood</h3>
-      <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Downtown" value="Downtown">Downtown</span>
-      <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Lawrenceville" value="Lawrenceville">Lawrenceville</span>
-      <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Oakland" value="Oakland">Oakland</span>
-      <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="South Side" value="South Side">South Side</span>
-      <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Squirrel Hill" value="Squirrel Hill">Squirrel Hill</span>
-      <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Strip District" value="Strip District">Strip District</span>
-
-
-      <button type="button" name="button">Filter</button>
-      <button type="button" name="button" class="clear">Clear</button>
+    <p>stuff about our map here</p>
 
     </div>
+
+    <div id="filters" class="sidediv">
+      <h3>Choose a Category</h3>
+
+      <div class="rows">
+
+      <div class="column">
+        <span class="check"><input type="checkbox" class="checkbox" name="active" value="active">Active</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="arts" value="arts">Art</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="bakeries" value="bakeries">Bakeries</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="cafes" value="cafes">Cafes</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="chinese" value="chinese">Chinese</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="coffee" value="coffee">Coffee</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="donuts" value="donuts">Donuts</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="ethnicmarkets" value="ethnicmarkets">Ethnicmarkets</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="french" value="french">French</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="indpak" value="indpak">Indpak</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="italian" value="italian">Italian</span>
+      </div>
+
+      <div class="column">
+        <span class="check"><input type="checkbox" class="checkbox" name="japanese" value="japanese">Japanese</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="mexican" value="mexican">Mexican</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="newamerican" value="newamerican">NewAmerican</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="nightlife" value="nightlife">NightLife</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="pizza" value="pizza">Pizza</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="restaurant" value="restaurant">Resturant</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="sandwiches" value="sandwiches">Sandwiches</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="shopping" value="shopping">Shopping</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="sushi" value="sushi">Sushi</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="thai" value="thai">Thai</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="vietnamese" value="vietnamese">Vietnamese</span>
+      </div>
+      </div>
+
+      <h3>Choose Popular Neighborhood</h3>
+
+      <div class="rows">
+      <div class="column">
+        <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Downtown" value="Downtown">Downtown</span>
+        <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Lawrenceville" value="Lawrenceville">Lawrenceville</span>
+        <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Oakland" value="Oakland">Oakland</span>
+      </div>
+
+      <div class="column">
+        <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="South Side" value="South Side">South Side</span>
+        <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Squirrel Hill" value="Squirrel Hill">Squirrel Hill</span>
+        <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Strip District" value="Strip District">Strip District</span>
+      </div>
+      </div>
+
+      <button type="button" id="filter_button" name="button">Filter</button>
+      <button type="button" id="clear_button" name="button" class="clear">Clear</button>
+
+    </div>
+
+  </div>
 
   </div>
 
@@ -210,19 +295,27 @@
 
 
       // Drawing Resturant Positions
-      let circles=chartArea.selectAll("circle").data(yelpData)
-        .join("circle")
-        .attr("r", 5)
-        .attr("fill", "#fc6e61")
-        .attr("opacity", 0.5)
-        .attr("cx", d => d.Position[0])
-        .attr("cy", d => d.Position[1])
+      let circles=chartArea.selectAll("image").data(yelpData)
+        .join("image")
+        .attr("xlink:href", "marker.png")
+        .attr("x", d => d.Position[0])
+        .attr("y", d => d.Position[1])
+        .attr("height", 50)
+        .attr("width", 50)
         .on("mouseenter", function() {
+
+
 
           let dot = d3.select(this);
 
-          dot.attr("opacity", 1)
-            .attr("fill", "#ffc20a");
+          dot.attr("xlink:href", "marker2.png");
+
+          x_translate = 125;
+          y_translate = 46;
+
+          tooltip.style("visibility","visible")
+            .attr("transform", "translate(" + (dot.datum().Position[0] - x_translate) +", " + (dot.datum().Position[1] + y_translate) +")");
+
 
           txt.text(dot.datum().name);
           var category = (dot.datum().category).toUpperCase();;
@@ -243,16 +336,14 @@
             txt3.text("★ ★ ★ ★ ★");
           };
 
-          tooltip.style("visibility","visible")
-            .attr("transform", "translate(" + (dot.datum().Position[0] + 8) +", " + (dot.datum().Position[1] + 9) +")");
+          rimg.attr("xlink:href", dot.datum().image_url);
 
         })
         .on("mouseout", function() {
 
           let dot = d3.select(this);
 
-          dot.attr("opacity", 0.5)
-            .attr("fill", "#fc6e61");
+          dot.attr("xlink:href", "marker.png");
 
           tooltip.style("visibility","hidden");
 
@@ -284,15 +375,20 @@
         let txt2 = tooltip.append("text")
           .attr("class", "txts")
           .attr("fill", "#ffffff")
-          .attr("text-anchor","middle")
+          .attr("text-anchor","right")
           .attr("alignment-baseline","central");
 
         let txt3 = tooltip.append("text")
           .attr("class", "txts")
-          .attr("text-anchor","middle")
+          .attr("text-anchor","right")
           .attr("fill", "#ffc20a")
           .attr("alignment-baseline","central");
 
+        let rimg = tooltip.append("image")
+          .attr("width", 75)
+          .attr("height", 45)
+          .attr("x", 70)
+          .attr("y", 40);
 
 
     // Drawing Resturant Positions on minimap
@@ -303,8 +399,6 @@
       .attr("opacity", 0.5)
       .attr("cx", d => d.mini_Position[0])
       .attr("cy", d => d.mini_Position[1]);
-
-
 
         //zoom
         let zoomExtent = [[0,0],[900,mapHeight]];
@@ -321,9 +415,6 @@
     map.call(plotZoom);
 
 
-
-
-
     // add a brush
     let brushGroup = minimapArea.append("g").attr("class","brush");
     let brush = d3.brush()
@@ -334,48 +425,58 @@
     brushGroup.call(brush)
 
 
+    function plotZoomed( evt ) {
 
+      let transform = evt.transform;
 
+      chartArea.attr("transform", transform);
+      function getScreenCoords(x, y,transform) { 
+        var xn = (x-transform.x)/transform.k ; 
+        var yn = (y-transform.y)/transform.k ; 
+        return [xn, yn]; }
 
-           function plotZoomed( evt ) {
-
-          let transform = evt.transform;
-
-          chartArea.attr("transform", transform);
-          function getScreenCoords(x, y,transform) { 
-              var xn = (x-transform.x)/transform.k ; 
-               var yn = (y-transform.y)/transform.k ; 
-                return [xn, yn]; }
-
-                 // console.log(evt)
-            let upperleft=pittsProjection.invert(getScreenCoords(0,0,evt.transform))
-            let lowerright=pittsProjection.invert(getScreenCoords(mapWidth,mapHeight,evt.transform))
-            minimapBounds = [pittsProjection_mini(upperleft), pittsProjection_mini(lowerright)]
+      // console.log(evt)
+        let upperleft=pittsProjection.invert(getScreenCoords(0,0,evt.transform))
+        let lowerright=pittsProjection.invert(getScreenCoords(mapWidth,mapHeight,evt.transform))
+        minimapBounds = [pittsProjection_mini(upperleft), pittsProjection_mini(lowerright)]
             // console.log(minimapBounds)
-//sos: transform issue
-          // adjust circle size too
-          circles.attr("r", 6 / transform.k);
 
-          // unadjust hover box
-          hover.attr("width", tooltipWidth / transform.k);
-          hover.attr("height", tooltipHeight / transform.k);
-          hover.attr("rx", 8 / transform.k)
+            //sos: transform issue
+        // adjust circle size too
+        circles.attr("width", 50 / transform.k);
+        circles.attr("height", 50 / transform.k);
 
-          // unadjust hover box text
-          txt.attr("font-size", 14 / transform.k)
-            .attr("x", tooltipWidth / 2.0 / transform.k)
-            .attr("y", 25 / transform.k);
+        x_translate = 125/transform.k;
+        y_translate = 46/transform.k;
 
-          txt2.attr("font-size", 12 / transform.k)
-            .attr("x", tooltipWidth / 2.0 / transform.k)
-            .attr("y", 50 / transform.k);
+        // unadjust hover box
+        hover.attr("width", tooltipWidth / transform.k)
+          .attr("height", tooltipHeight / transform.k)
+          .attr("rx", 8/transform.k)
+          .attr("transform", "translate(" + (125 - x_translate) +", " + (-45 + y_translate) +")");
 
-          txt3.attr("font-size", 14 / transform.k)
-            .attr("x", tooltipWidth / 2.0 / transform.k)
-            .attr("y", 75 / transform.k);
+        // unadjust hover box text
+        txt.attr("font-size", 14 / transform.k)
+          .attr("x", tooltipWidth / 2.0 / transform.k)
+          .attr("y", 25 / transform.k)
+          .attr("transform", "translate(" + (125 - x_translate) +", " + (-45 + y_translate) +")");
 
+        txt2.attr("font-size", 12 / transform.k)
+          .attr("x", tooltipWidth / 2.0 / transform.k)
+          .attr("y", 50 / transform.k)
+          .attr("transform", "translate(" + (125 - x_translate) +", " + (-45 + y_translate) +")");
 
+        txt3.attr("font-size", 14 / transform.k)
+          .attr("x", tooltipWidth / 2.0 / transform.k)
+          .attr("y", 75 / transform.k)
+          .attr("transform", "translate(" + (125 - x_translate) +", " + (-45 + y_translate) +")");
 
+        // unadjust restaurant image_url
+        rimg.attr("width", 75/transform.k)
+          .attr("height", 45/transform.k)
+          .attr("x", 70/transform.k)
+          .attr("y", 40/transform.k)
+          .attr("transform", "translate(" + (125 - x_translate) +", " + (-45 + y_translate) +")");
 
 
       brushGroup.call(brush.move, minimapBounds)
@@ -485,7 +586,7 @@
               //update map function
               function updateMap(data){
                 var pitts = topojson.feature(pittsData, pittsData.objects.Neighborhoods_);
-                var pittsProjection = d3.geoMercator().fitSize([mapWidth, mapHeight], pitts);
+                var pittsProjection = d3.geoMercator().fitSize([900, mapHeight], pitts);
                 var pittsPath = d3.geoPath().projection(pittsProjection);
 
                 //update map
@@ -493,15 +594,13 @@
                   d.Position = pittsProjection( [d.longitude, d.latitude]);
                 });
 
-                let circles = chartArea.selectAll("circle").data(data)
-                  .join("circle")
-                  .attr("r", 5)
-                  .attr("fill", "#fc6e61")
-                  .attr("opacity", 0.5)
-                  .attr("cx", d => d.Position[0])
-                  .attr("cy", d => d.Position[1]);
-
-
+                let circles = chartArea.selectAll("image").data(data)
+                  .join("image")
+                  .attr("xlink:href", "marker.png")
+                  .attr("x", d => d.Position[0])
+                  .attr("y", d => d.Position[1])
+                  .attr("height", 50)
+                  .attr("width", 50);
               };
 
 
