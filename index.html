@@ -9,9 +9,9 @@
 
   <style>
 
-  #container {
+  /* #container {
     display: flex;
-  }
+  } */
 
   #sidebar {
     display: flex;
@@ -65,13 +65,6 @@
   </g>
 </svg>
 
-
-  <div id="container">
-
-    <div id="mapdiv">
-      <svg id="map" width="1200" height="900"></svg>
-    </div>
-
     <div id="sidebar">
 
 
@@ -115,13 +108,8 @@
       <button type="button" name="button" class="clear">Clear</button>
 
     </div>
-    <h3>Restaurants</h3>
-    <div id="menu" class="sidediv">
-    </div>
 
   </div>
-
-</div>
 
 
   <script id="code">
@@ -216,6 +204,7 @@
           .attr("class", "neighborhood")
           .attr("d", pittsPath_mini);
 
+
       // Drawing Resturant Positions
       let circles=chartArea.selectAll("circle").data(yelpData)
         .join("circle")
@@ -223,8 +212,61 @@
         .attr("fill", "orange")
         .attr("opacity", 0.5)
         .attr("cx", d => d.Position[0])
-        .attr("cy", d => d.Position[1]);
-        // console.log(circles)
+        .attr("cy", d => d.Position[1])
+        .on("mouseenter", function() {
+
+          let dot = d3.select(this);
+
+          txt.text(dot.datum().name);
+          txt2.text(dot.datum().category);
+          txt3.text(dot.datum().rating);
+
+          tooltip.style("visibility","visible")
+            .attr("transform", "translate(" + (dot.datum().Position[0] + 8) +", " + (dot.datum().Position[1] + 9) +")");
+
+        })
+        .on("mouseout", function() {
+
+          let dot = d3.select(this);
+
+          tooltip.style("visibility","hidden");
+
+        });
+
+
+        // Tooltip
+        let tooltipWidth = 160;
+        let tooltipHeight = 100;
+
+        let tooltip = chartArea.append("g")
+          .attr("class", "tooltip")
+          .attr("visibility", "hidden");
+
+        tooltip.append("rect")
+          .attr("fill", "#ffe0ad")
+          .attr("opacity", 1)
+          .attr("width", tooltipWidth)
+          .attr("height", tooltipHeight);
+
+        let txt = tooltip.append("text")
+          .attr("text-anchor","middle")
+          .attr("alignment-baseline","hanging")
+          .attr("x", tooltipWidth / 2.0)
+          .attr("y", 4);
+
+        let txt2 = tooltip.append("text")
+          .attr("text-anchor","middle")
+          .attr("alignment-baseline","hanging")
+          .attr("x", tooltipWidth / 2.0)
+          .attr("y", 24);
+
+        let txt3 = tooltip.append("text")
+          .attr("text-anchor","middle")
+          .attr("alignment-baseline","hanging")
+          .attr("x", tooltipWidth / 2.0)
+          .attr("y", 44);
+
+
 
     // Drawing Resturant Positions on minimap
     let circles_mini=minimapArea.selectAll("circle").data(yelpData)
@@ -236,38 +278,6 @@
       .attr("cy", d => d.mini_Position[1]);
 
 
-
-      // Tooltip
-      let tooltipWidth = 160;
-      let tooltipHeight = 100;
-
-      let tooltip = chartArea.append("g")
-        .attr("class", "tooltip")
-        .attr("visibility", "hidden");
-
-      tooltip.append("rect")
-        .attr("fill", "#ffe0ad")
-        .attr("opacity", 1)
-        .attr("width", tooltipWidth)
-        .attr("height", tooltipHeight);
-
-      let txt = tooltip.append("text")
-        .attr("text-anchor","middle")
-        .attr("alignment-baseline","hanging")
-        .attr("x", tooltipWidth / 2.0)
-        .attr("y", 4);
-
-      let txt2 = tooltip.append("text")
-        .attr("text-anchor","middle")
-        .attr("alignment-baseline","hanging")
-        .attr("x", tooltipWidth / 2.0)
-        .attr("y", 24);
-
-      let txt3 = tooltip.append("text")
-        .attr("text-anchor","middle")
-        .attr("alignment-baseline","hanging")
-        .attr("x", tooltipWidth / 2.0)
-        .attr("y", 44);
 
         //zoom
         let zoomExtent = [[0,0],[mapWidth,mapHeight]];
@@ -447,39 +457,39 @@
 
 
               //hover
-                data.forEach(function(d, i) {
-                  d3.select("#menu")
-                  .append("span")
-                  .text(d.name)
-                  .on("mouseover", function() {
-
-                    d3.select(this)
-                      .style("color", "orange");
-
-                    circles.attr("r", circleD => {
-                      if (circleD["name"] == d.name) {
-                        return 8;
-                      } else {
-                        return 5;
-                      };
-                    });
-
-
-                    txt.text(d.name);
-                    txt2.text(d.category);
-                    txt3.text(d.rating);
-
-                    tooltip.style("visibility","visible")
-                      .attr("transform", "translate(" + (d.Position[0] + 8) +", " + (d.Position[1] + 9) +")");
-
-                  })
-                  .on("mouseout", function() {
-                    d3.select(this)
-                    .style("color", "black");
-
-                    circles.attr("r", 5);
-                  });
-                })
+                // data.forEach(function(d, i) {
+                //   d3.select("#menu")
+                //   .append("span")
+                //   .text(d.name)
+                //   .on("mouseover", function() {
+                //
+                //     d3.select(this)
+                //       .style("color", "orange");
+                //
+                //     circles.attr("r", circleD => {
+                //       if (circleD["name"] == d.name) {
+                //         return 8;
+                //       } else {
+                //         return 5;
+                //       };
+                //     });
+                //
+                //
+                //     txt.text(d.name);
+                //     txt2.text(d.category);
+                //     txt3.text(d.rating);
+                //
+                //     tooltip.style("visibility","visible")
+                //       .attr("transform", "translate(" + (d.Position[0] + 8) +", " + (d.Position[1] + 9) +")");
+                //
+                //   })
+                //   .on("mouseout", function() {
+                //     d3.select(this)
+                //     .style("color", "black");
+                //
+                //     circles.attr("r", 5);
+                //   });
+                // })
 
               };
 
@@ -504,10 +514,6 @@
               };
 
   };
-
-
-
-
 
 
 
