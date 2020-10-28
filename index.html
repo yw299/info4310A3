@@ -51,6 +51,10 @@
       display: none;
   }
 
+  .txts {
+    font-family: Arial, sans-serif;
+  }
+
   </style>
 
 </head>
@@ -59,7 +63,7 @@
 
   <h1>Pittsburgh Restaurant Reviews</h1>
 <svg id="canvas" width="1200" height="900">
-  <g id="map" width="900" height="900"></g>
+  <g id="map" width="1200" height="900"></g>
   <g id="minimap" width="300" height="300" transform="translate(899,1)">
         <rect x="0" y="0" width="300" height="300" stroke="black" stroke-width="1" fill="white" opacity="1"/>
   </g>
@@ -167,7 +171,7 @@
 
       // Map Projection
       var pitts = topojson.feature(pittsData, pittsData.objects.Neighborhoods_);
-      var pittsProjection = d3.geoMercator().fitSize([mapWidth, mapHeight], pitts);
+      var pittsProjection = d3.geoMercator().fitSize([900, mapHeight], pitts);
       var pittsPath = d3.geoPath().projection(pittsProjection);
 
       // MiniMap Projection
@@ -219,7 +223,7 @@
 
           txt.text(dot.datum().name);
           txt2.text(dot.datum().category);
-          txt3.text(dot.datum().rating);
+          txt3.text(dot.datum().rating + "/5 stars");
 
           tooltip.style("visibility","visible")
             .attr("transform", "translate(" + (dot.datum().Position[0] + 8) +", " + (dot.datum().Position[1] + 9) +")");
@@ -235,36 +239,37 @@
 
 
         // Tooltip
-        let tooltipWidth = 160;
+        let tooltipWidth = 260;
         let tooltipHeight = 100;
 
         let tooltip = chartArea.append("g")
           .attr("class", "tooltip")
           .attr("visibility", "hidden");
 
-        tooltip.append("rect")
-          .attr("fill", "#ffe0ad")
+        let hover = tooltip.append("rect")
+          .attr("fill", "#0f133b")
           .attr("opacity", 1)
+          .attr("rx", 8)
           .attr("width", tooltipWidth)
           .attr("height", tooltipHeight);
 
         let txt = tooltip.append("text")
+          .attr("class", "txts")
+          .attr("fill", "#ffffff")
           .attr("text-anchor","middle")
-          .attr("alignment-baseline","hanging")
-          .attr("x", tooltipWidth / 2.0)
-          .attr("y", 4);
+          .attr("alignment-baseline","central");
 
         let txt2 = tooltip.append("text")
+          .attr("class", "txts")
+          .attr("fill", "#ffffff")
           .attr("text-anchor","middle")
-          .attr("alignment-baseline","hanging")
-          .attr("x", tooltipWidth / 2.0)
-          .attr("y", 24);
+          .attr("alignment-baseline","central");
 
         let txt3 = tooltip.append("text")
+          .attr("class", "txts")
           .attr("text-anchor","middle")
-          .attr("alignment-baseline","hanging")
-          .attr("x", tooltipWidth / 2.0)
-          .attr("y", 44);
+          .attr("fill", "#ffffff")
+          .attr("alignment-baseline","central");
 
 
 
@@ -328,6 +333,26 @@
 //sos: transform issue
           // // adjust circle size too
           circles.attr("r", 6 / transform.k);
+
+          // unadjust hover box
+          hover.attr("width", tooltipWidth / transform.k);
+          hover.attr("height", tooltipHeight / transform.k);
+          hover.attr("rx", 8 / transform.k)
+
+          // unadjust hover box text
+          txt.attr("font-size", 16 / transform.k)
+            .attr("x", tooltipWidth / 2.0 / transform.k)
+            .attr("y", 25 / transform.k);
+
+          txt2.attr("font-size", 14 / transform.k)
+            .attr("x", tooltipWidth / 2.0 / transform.k)
+            .attr("y", 50 / transform.k);
+
+          txt3.attr("font-size", 14 / transform.k)
+            .attr("x", tooltipWidth / 2.0 / transform.k)
+            .attr("y", 75 / transform.k);
+
+
 
 
       brushGroup.call(brush.move, minimapBounds)
@@ -453,43 +478,6 @@
                   .attr("cx", d => d.Position[0])
                   .attr("cy", d => d.Position[1]);
 
-
-
-
-              //hover
-                // data.forEach(function(d, i) {
-                //   d3.select("#menu")
-                //   .append("span")
-                //   .text(d.name)
-                //   .on("mouseover", function() {
-                //
-                //     d3.select(this)
-                //       .style("color", "orange");
-                //
-                //     circles.attr("r", circleD => {
-                //       if (circleD["name"] == d.name) {
-                //         return 8;
-                //       } else {
-                //         return 5;
-                //       };
-                //     });
-                //
-                //
-                //     txt.text(d.name);
-                //     txt2.text(d.category);
-                //     txt3.text(d.rating);
-                //
-                //     tooltip.style("visibility","visible")
-                //       .attr("transform", "translate(" + (d.Position[0] + 8) +", " + (d.Position[1] + 9) +")");
-                //
-                //   })
-                //   .on("mouseout", function() {
-                //     d3.select(this)
-                //     .style("color", "black");
-                //
-                //     circles.attr("r", 5);
-                //   });
-                // })
 
               };
 
