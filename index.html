@@ -8,6 +8,50 @@
   <script src="https://d3js.org/topojson.v2.min.js"></script>
 
   <style>
+
+  body {
+    background-color: #f9f9f9;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  h1, h2, h3, p, span {
+    font-family: Arial, sans-serif;
+  }
+
+  #container {
+    display: flex;
+    justify-content: center;
+  }
+
+  #sidebar {
+    display: flex;
+    flex-direction: column;
+    margin-left: 50px;
+    width: 300px;
+  }
+
+  .sidediv {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rows {
+    display: flex;
+  }
+
+  .rows span {
+    margin: 4px 0;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
   select {
         display: block;
         background-color: #E5E5E5;
@@ -19,14 +63,57 @@
         padding:10px;
     }
 
+  button {
+    margin: 5px;
+    font-size: 18px;
+    border-radius: 8px;
+    padding: 10px;
+  }
+
+  #filter_button {
+    margin-top: 25px;
+    border: none;
+    background-color: #0f133b;
+    color: #fff;
+  }
+
+  #filter_button:hover {
+    background-color: #292d5e;
+    cursor: pointer;
+  }
+
+  #clear_button {
+    color: #0f133b;
+    border: 3px #0f133b solid;
+    background-color: #fff;
+  }
+
+  #clear_button:hover {
+    background-color: #eaeaea;
+    cursor: pointer;
+  }
+
   #button{
-        margin-top: -20px;
-        margin-left:40px;
-    }
+      margin-top: -20px;
+      margin-left:40px;
+  }
+
+
   .neighborhood {
-    fill: #f9f9f9;
-    stroke: #bdbdbd;
+    fill: #badbc3;
+    stroke: #f9f9f9;
     stroke-width: 1px;
+  }
+
+  rect.handle {
+      display: none;
+  }
+  rect.overlay {
+      display: none;
+  }
+
+  .txts {
+    font-family: Arial, sans-serif;
   }
 
   </style>
@@ -37,44 +124,121 @@
 
   <h1>Pittsburgh Restaurant Reviews</h1>
 
-  <svg id="map" width="1200" height="900"></svg>
+<div id="container">
 
+  <svg id="canvas" width="1200" height="900">
+    <g id="map" width="1200" height="900"></g>
+    <g id="minimap" width="300" height="300" transform="translate(899,1)">
+          <rect x="0" y="0" width="300" height="300" stroke="black" stroke-width="1" fill="white" opacity="1"/>
+    </g>
+  </svg>
 
-<p>Choose restaurant category</p>
+  <div id="sidebar">
 
-  <input type="checkbox" class="checkbox" name="active" value="active">Active
-  <input type="checkbox" class="checkbox" name="arts" value="arts">Art
-  <input type="checkbox" class="checkbox" name="bakeries" value="bakeries">Bakeries
-  <input type="checkbox" class="checkbox" name="cafes" value="cafes">Cafes
-  <input type="checkbox" class="checkbox" name="chinese" value="chinese">Chinese
-  <input type="checkbox" class="checkbox" name="coffee" value="coffee">Coffee
-  <input type="checkbox" class="checkbox" name="donuts" value="donuts">Donuts
-  <input type="checkbox" class="checkbox" name="ethnicmarkets" value="ethnicmarkets">Ethnicmarkets
-  <input type="checkbox" class="checkbox" name="french" value="french">French
-  <input type="checkbox" class="checkbox" name="indpak" value="indpak">Indpak
-  <input type="checkbox" class="checkbox" name="italian" value="italian">Italian
-  <input type="checkbox" class="checkbox" name="japanese" value="japanese">Japanese
-  <input type="checkbox" class="checkbox" name="mexican" value="mexican">Mexican
-  <input type="checkbox" class="checkbox" name="newamerican" value="newamerican">NewAmerican
-  <input type="checkbox" class="checkbox" name="nightlife" value="nightlife">NightLife
-  <input type="checkbox" class="checkbox" name="pizza" value="pizza">Pizza
-  <input type="checkbox" class="checkbox" name="restaurant" value="restaurant">Resturant
-  <input type="checkbox" class="checkbox" name="sandwiches" value="sandwiches">Sandwiches
-  <input type="checkbox" class="checkbox" name="shopping" value="shopping">Shopping
-  <input type="checkbox" class="checkbox" name="sushi" value="sushi">Sushi
-  <input type="checkbox" class="checkbox" name="thai" value="thai">Thai
-  <input type="checkbox" class="checkbox" name="vietnamese" value="vietnamese">Vietnamese
-<button type="button" name="button">Filter</button>
+    <div class="blurb">
+
+    <p>stuff about our map here</p>
+
+    </div>
+
+    <div id="filters" class="sidediv">
+      <h3>Choose a Category</h3>
+
+      <div class="rows">
+
+      <div class="column">
+        <span class="check"><input type="checkbox" class="checkbox" name="active" value="active">Active &#129409;</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="arts" value="arts">Art &#127912;</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="bakeries" value="bakeries">Bakeries &#127838;</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="cafes" value="cafes">Cafes &#127854;</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="chinese" value="chinese">Chinese &#127836;</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="coffee" value="coffee">Coffee &#127854;</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="donuts" value="donuts">Donuts &#127849;</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="ethnicmarkets" value="ethnicmarkets">Ethnicmarkets &#127851;</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="french" value="french">French &#127848;</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="indpak" value="indpak">Indpak &#127869;</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="italian" value="italian">Italian &#127837;</span>
+      </div>
+
+      <div class="column">
+        <span class="check"><input type="checkbox" class="checkbox" name="japanese" value="japanese">Japanese &#127857;</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="mexican" value="mexican">Mexican &#127831;</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="newamerican" value="newamerican">NewAmerican &#127828;</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="nightlife" value="nightlife">NightLife &#127865;</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="pizza" value="pizza">Pizza &#127829;</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="restaurant" value="restaurant">Resturant &#127860;</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="sandwiches" value="sandwiches">Sandwiches &#127856;</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="shopping" value="shopping">Shopping &#128091;</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="sushi" value="sushi">Sushi &#127843;</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="thai" value="thai">Thai &#127835;</span>
+        <span class="check"><input type="checkbox" class="checkbox" name="vietnamese" value="vietnamese">Vietnamese &#127858;</span>
+      </div>
+      </div>
+
+      <h3>Choose Popular Neighborhood</h3>
+
+      <div class="rows">
+      <div class="column">
+        <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Downtown" value="Downtown">Downtown</span>
+        <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Lawrenceville" value="Lawrenceville">Lawrenceville</span>
+        <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Oakland" value="Oakland">Oakland</span>
+      </div>
+
+      <div class="column">
+        <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="South Side" value="South Side">South Side</span>
+        <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Squirrel Hill" value="Squirrel Hill">Squirrel Hill</span>
+        <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Strip District" value="Strip District">Strip District</span>
+      </div>
+      </div>
+
+      <button type="button" id="filter_button" name="button">Filter</button>
+      <button type="button" id="clear_button" name="button" class="clear">Clear</button>
+
+    </div>
+
+  </div>
+
+  </div>
+
 
   <script id="code">
 
     // Map & Dimensions
-    const map = d3.select("svg#map");
+    const map = d3.select("svg g#map");
     const mapWidth = map.attr("width");
     const mapHeight = map.attr("height");
     const chartArea = map.append("g");
 
+    // make the minimap
+    const minimap = d3.select("svg g#minimap");
+    const minimapWidth = minimap.attr("width");
+    const minimapHeight = minimap.attr("height");
+    const minimapArea = minimap.append("g")
+                               // .attr("transform","translate("+minimapMargin.left+","+minimapMargin.top+")")
+                               .attr("opacity", 0.5);
 
+
+
+   map.append("defs").append("clipPath")
+                     .attr("id","chartClip")
+                     .append("rect").attr("x",0)
+                                    .attr("y",0)
+                                    .attr("width",mapWidth)
+                                    .attr("height",mapHeight);
+    const menu = d3.select("#menu");
+
+
+    map.attr("clip-path","url(#chartClip)");
+
+
+    minimap.append("defs").append("clipPath")
+                      .attr("id","minichartClip")
+                      .append("rect").attr("x",0)
+                                     .attr("y",0)
+                                     .attr("width",minimapWidth)
+                                     .attr("height",minimapHeight);
+
+     minimap.attr("clip-path","url(#minichartClip)");
     // RequestData function
     const requestData = async function() {
 
@@ -83,21 +247,33 @@
       const pittsData = await d3.json("pittsburgh_neighborhoods.json");
       const yelpData = await d3.csv("yelp_pittsburgh.csv");
 
-      // DELETE LATER
-      console.log(pittsData);
-      console.log(yelpData);
+
+      // make an interactive "surface" at the top of the plot area
+     chartArea.append("rect").attr("x",0).attr("y",0)
+                       .attr("width",mapWidth).attr("height",mapHeight)
+                       .attr("fill","none")
+                       .style("pointer-events","all");
 
       // Map Projection
       var pitts = topojson.feature(pittsData, pittsData.objects.Neighborhoods_);
-      var pittsProjection = d3.geoMercator().fitSize([mapWidth, mapHeight], pitts);
+      var pittsProjection = d3.geoMercator().fitSize([900, mapHeight], pitts);
       var pittsPath = d3.geoPath().projection(pittsProjection);
+
+      // MiniMap Projection
+      var pitts_mini = topojson.feature(pittsData, pittsData.objects.Neighborhoods_);
+      var pittsProjection_mini = d3.geoMercator().fitSize([minimapWidth, minimapHeight], pitts_mini);
+      var pittsPath_mini = d3.geoPath().projection(pittsProjection_mini);
+
 
       // Restaurant position
       yelpData.forEach( d => {
         d.Position = pittsProjection( [d.longitude, d.latitude]);
       });
 
-      console.log(yelpData);
+      //minimap Restaurant position
+      yelpData.forEach( d => {
+        d.mini_Position = pittsProjection_mini( [d.longitude, d.latitude]);
+      });
 
       // Drawing Map Projection
       chartArea.selectAll("path.neighborhood").data(pitts.features)
@@ -105,50 +281,353 @@
           .attr("class", "neighborhood")
           .attr("d", pittsPath);
 
-      // Drawing Resturant Positions
-      let circles=chartArea.selectAll("circle").data(yelpData)
-        .join("circle")
-        .attr("r", 5)
-        .attr("fill", "orange")
-        .attr("opacity", 0.5)
-        .attr("cx", d => d.Position[0])
-        .attr("cy", d => d.Position[1]);
 
+      // Drawing MiniMap Projection
+      minimapArea.selectAll("path.neighborhood").data(pitts.features)
+          .join("path")
+          .attr("class", "neighborhood")
+          .attr("d", pittsPath_mini);
+
+
+      // Drawing Resturant Positions
+
+      function updateMap(data) {
+      let circles=chartArea.selectAll("image").data(data)
+        .join("image")
+        .attr("xlink:href", "marker.png")
+        .attr("x", d => d.Position[0])
+        .attr("y", d => d.Position[1])
+        .attr("height", 50)
+        .attr("width", 50)
+        .on("mouseenter", HandleMouseEnter)
+        .on("mouseout", HandleMouseOut);
+
+      function HandleMouseEnter() {
+
+        let dot = d3.select(this);
+
+        dot.attr("xlink:href", "marker2.png");
+
+        rimg.attr("xlink:href", dot.datum().image_url);
+
+        txt.text(dot.datum().name);
+
+        var category = (dot.datum().category).toUpperCase();
+        txt2.text(category);
+
+        if (dot.datum().rating == 1) {
+            txt3.text("★");
+          } else if (dot.datum().rating == 2) {
+            txt3.text("★ ★");
+          } else if (dot.datum().rating == 3) {
+            txt3.text("★ ★ ★");
+          } else if (dot.datum().rating == 3.5) {
+            txt3.text("★ ★ ★ ½");
+          } else if (dot.datum().rating == 4) {
+            txt3.text("★ ★ ★ ★");
+          } else if (dot.datum().rating == 4.5) {
+            txt3.text("★ ★ ★ ★ ½");
+          } else {
+            txt3.text("★ ★ ★ ★ ★");
+          };
+
+        x_translate = 125;
+        y_translate = 46;
+
+        tooltip.style("visibility","visible")
+          .attr("transform", "translate(" + (dot.datum().Position[0] - x_translate) +", " + (dot.datum().Position[1] + y_translate) +")");
+
+        }
+
+        function HandleMouseOut() {
+          let dot = d3.select(this);
+
+          dot.attr("xlink:href", "marker.png");
+
+          tooltip.style("visibility","hidden");
+        }
+
+        // Tooltip
+        let tooltipWidth = 300;
+        let tooltipHeight = 100;
+
+        let tooltip = chartArea.append("g")
+          .attr("class", "tooltip")
+          .attr("visibility", "hidden");
+
+        let hover = tooltip.append("rect")
+          .attr("fill", "#0f133b")
+          .attr("opacity", 1)
+          .attr("rx", 8)
+          .attr("width", tooltipWidth)
+          .attr("height", tooltipHeight);
+
+        let txt = tooltip.append("text")
+          .attr("class", "txts")
+          .attr("font-weight", "900")
+          .attr("fill", "#ffffff")
+          .attr("text-anchor","middle")
+          .attr("alignment-baseline","central")
+          .attr("x", tooltipWidth / 2.0)
+          .attr("y", 25);
+
+        let txt2 = tooltip.append("text")
+          .attr("class", "txts")
+          .attr("fill", "#ffffff")
+          .attr("text-anchor","right")
+          .attr("alignment-baseline","central")
+          .attr("x", tooltipWidth / 2.0)
+          .attr("y", 50);
+
+        let txt3 = tooltip.append("text")
+          .attr("class", "txts")
+          .attr("text-anchor","right")
+          .attr("fill", "#ffc20a")
+          .attr("alignment-baseline","central")
+          .attr("x", tooltipWidth / 2.0)
+          .attr("y", 75);
+
+        let rimg = tooltip.append("image")
+          .attr("width", 75)
+          .attr("height", 45)
+          .attr("x", 70)
+          .attr("y", 40);
+
+
+        }
+
+        updateMap(yelpData);
+
+
+
+          //checkbox filtering by category
+          //by default if boxes and boxes_neighborhood length  === 0, then newdata = yelpData
+
+          d3.select("button").on("click",function(){
+              var checked=[];
+              var checked_neighborhood=[]
+              var boxes = d3.selectAll("input.checkbox:checked");
+              var boxes_neighborhood = d3.selectAll("input.neighborhoodcheckbox:checked");
+              boxes.each(function(){
+                checked.push(this.value)
+              });
+              boxes_neighborhood.each(function(){
+                checked_neighborhood.push(this.value)
+              });
+              console.log(checked)
+              console.log(checked_neighborhood)
+              //update new data
+              // newdata = []
+              newdata = yelpData.filter((d)=>{
+                let passed_category_filter = false;
+                let passed_neighborhood_filter = false;
+
+
+
+                if (checked.length === 0){
+                  passed_category_filter = true;
+                } else {
+                  checked.forEach((category, i) => {
+                    passed_category_filter = passed_category_filter || d['category']===category
+                  });
+
+                }
+
+                if (checked_neighborhood.length ===0) {
+                  passed_neighborhood_filter = true;
+                } else {
+                  checked_neighborhood.forEach((neighborhood, i) => {
+                    passed_neighborhood_filter = passed_neighborhood_filter || d['neighborhood']===neighborhood
+                  });
+
+                }
+
+
+              return passed_category_filter && passed_neighborhood_filter;
+              })
+                updateMap(newdata)
+                updateMiniMap(newdata)
+                });
+
+                //uncheck boxes
+                function uncheckAll(){
+                  d3.selectAll('input').property('checked',false);
+                  d3.select("#menu").remove()
+                };
+
+
+          //clear checkbox
+          d3.select(".clear").on("click",function(){
+            uncheckAll()
+            updateMap(yelpData)
+            updateMiniMap(yelpData)
+          });
+
+                //update map function
+                // function updateMap(data){
+                //   var pitts = topojson.feature(pittsData, pittsData.objects.Neighborhoods_);
+                //   var pittsProjection = d3.geoMercator().fitSize([900, mapHeight], pitts);
+                //   var pittsPath = d3.geoPath().projection(pittsProjection);
+                //
+                //   //update map
+                //   data.forEach( d => {
+                //     d.Position = pittsProjection( [d.longitude, d.latitude]);
+                //   });
+                //
+                //   let circles = chartArea.selectAll("image").data(data)
+                //     .join("image")
+                //     .attr("xlink:href", "marker.png")
+                //     .attr("x", d => d.Position[0])
+                //     .attr("y", d => d.Position[1])
+                //     .attr("height", 50)
+                //     .attr("width", 50)
+                //     .on("mouseenter", HandleMouseEnter)
+                //     .on("mouseout", HandleMouseOut);
+                // };
+
+                function updateMiniMap(data){
+                  var pitts_mini = topojson.feature(pittsData, pittsData.objects.Neighborhoods_);
+                  var pittsProjection_mini = d3.geoMercator().fitSize([minimapWidth, minimapHeight], pitts_mini);
+                  var pittsPath_mini = d3.geoPath().projection(pittsProjection_mini);
+
+                  data.forEach( d => {
+                    d.mini_Position = pittsProjection_mini( [d.longitude, d.latitude]);
+                  });
+
+
+                  let circles_mini=minimapArea.selectAll("circle").data(data)
+                    .join("circle")
+                    .attr("r", 2)
+                    .attr("fill", "#fc6e61")
+                    .attr("opacity", 0.5)
+                    .attr("cx", d => d.mini_Position[0])
+                    .attr("cy", d => d.mini_Position[1]);
+                };
+
+
+
+    // Drawing Resturant Positions on minimap
+    let circles_mini=minimapArea.selectAll("circle").data(yelpData)
+      .join("circle")
+      .attr("r", 2)
+      .attr("fill", "#fc6e61")
+      .attr("opacity", 0.5)
+      .attr("cx", d => d.mini_Position[0])
+      .attr("cy", d => d.mini_Position[1]);
 
         //zoom
-        let zoomExtent = [[0,0],[mapWidth,mapHeight]];
-        let translateExtent = [[-100,-100],[mapWidth+100,mapHeight+100]];
+        let zoomExtent = [[0,0],[900,mapHeight]];
+        let translateExtent = [[-100,-100],[1000,1000]];
         var plotZoom = d3.zoom()
                        .extent(zoomExtent)
                        .translateExtent(translateExtent)
                        .scaleExtent([1,8])
                        .on("zoom", plotZoomed);
 
-       // make an interactive "surface" at the top of the plot area
-     map.append("rect").attr("x",0).attr("y",0)
-                        .attr("width",mapWidth).attr("height",mapHeight)
-                        .attr("fill","none")
-                        .style("pointer-events","all");
+
+
      // then add the zoom handler
     map.call(plotZoom);
 
 
-           function plotZoomed( evt ) {
+    // add a brush
+    let brushGroup = minimapArea.append("g").attr("class","brush");
+    let brush = d3.brush()
+        .extent([[0,0], [minimapWidth,minimapHeight]])
+        //.on("start", startbrush)
+        .on("brush", brushed)
+        //.on("end", endbrush);
+    brushGroup.call(brush)
 
-          let transform = evt.transform;
-          //
-          chartArea.attr("transform", transform);
-          //
-          //
-          //
-          // // adjust circle size too
-          circles.attr("r", 6 / transform.k);
+
+    function plotZoomed( evt ) {
+
+      let transform = evt.transform;
+
+      chartArea.attr("transform", transform);
+      function getScreenCoords(x, y,transform) { 
+        var xn = (x-transform.x)/transform.k ; 
+        var yn = (y-transform.y)/transform.k ; 
+        return [xn, yn]; }
+
+      // console.log(evt)
+        let upperleft=pittsProjection.invert(getScreenCoords(0,0,evt.transform))
+        let lowerright=pittsProjection.invert(getScreenCoords(mapWidth,mapHeight,evt.transform))
+        minimapBounds = [pittsProjection_mini(upperleft), pittsProjection_mini(lowerright)]
+            // console.log(minimapBounds)
+
+            //sos: transform issue
+        // adjust circle size too
+        circles.attr("width", 50 / transform.k);
+        circles.attr("height", 50 / transform.k);
+
+        x_translate = 125/transform.k;
+        y_translate = 46/transform.k;
+
+        // unadjust hover box
+        hover.attr("width", tooltipWidth / transform.k)
+          .attr("height", tooltipHeight / transform.k)
+          .attr("rx", 8/transform.k)
+          .attr("transform", "translate(" + (125 - x_translate) +", " + (-45 + y_translate) +")");
+
+        // unadjust hover box text
+        txt.attr("font-size", 11 / transform.k)
+          .attr("x", tooltipWidth / 2.0 / transform.k)
+          .attr("y", 25 / transform.k)
+          .attr("transform", "translate(" + (125 - x_translate) +", " + (-45 + y_translate) +")");
+
+        txt2.attr("font-size", 11 / transform.k)
+          .attr("x", tooltipWidth / 2.0 / transform.k)
+          .attr("y", 50 / transform.k)
+          .attr("transform", "translate(" + (125 - x_translate) +", " + (-45 + y_translate) +")");
+
+        txt3.attr("font-size", 14 / transform.k)
+          .attr("x", tooltipWidth / 2.0 / transform.k)
+          .attr("y", 75 / transform.k)
+          .attr("transform", "translate(" + (125 - x_translate) +", " + (-45 + y_translate) +")");
+
+        // unadjust restaurant image_url
+        rimg.attr("width", 75/transform.k)
+          .attr("height", 45/transform.k)
+          .attr("x", 70/transform.k)
+          .attr("y", 40/transform.k)
+          .attr("transform", "translate(" + (125 - x_translate) +", " + (-45 + y_translate) +")");
+
+
+      brushGroup.call(brush.move, minimapBounds)
 
 
         }
 
 
 
+        function brushed( {sourceEvent, selection} ) {
+
+          // // this will go into an infinite loop if you don't catch the things triggered by the zoom
+          if (sourceEvent === undefined) {
+            return;
+          }
+          //
+          let transform = d3.zoomTransform(chartArea.node());
+          // console.log(transform)
+
+        // console.log(selection)
+                let upperleft=pittsProjection_mini.invert([selection[0][0],selection[0][1]])
+                let lowerright=pittsProjection_mini.invert([selection[1][0],selection[1][1]])
+                // console.log(upperleft)
+                // console.log(lowerright)
+                function getScreenCoords(x, y,transform) { 
+                    var xn = (x-transform.x)/transform.k ; 
+                     var yn = (y-transform.y)/transform.k ; 
+                      return [xn, yn]; }
+
+
+           transform.x = selection[0][0]-(pittsProjection(upperleft)[0])*transform.k;
+           transform.y = selection[0][1]-(pittsProjection(upperleft)[1])*transform.k;
+
+          //
+        map.call(plotZoom.transform, transform);
+        }
 
 
         map.call(plotZoom.transform, d3.zoomIdentity);
@@ -156,50 +635,8 @@
 
 
 
-        //checkbox filtering
-          var checked=[];
-        d3.select("button").on("click",function(){
-            var boxes = d3.selectAll("input.checkbox:checked");
-            boxes.each(function(){
-              checked.push(this.value)
-            });
-            console.log(checked)
-            //update new data
-            newdata = []
-            checked.forEach((d, i) => {
-              newdata.push(yelpData.filter((d)=>{return d['category']===checked[i]}))
-            });
-            newdata = newdata.flat()
-
-              console.log(newdata.flat())
-              updateMap(newdata)
-              });
-
-              function updateMap(data){
-                var pitts = topojson.feature(pittsData, pittsData.objects.Neighborhoods_);
-                var pittsProjection = d3.geoMercator().fitSize([mapWidth, mapHeight], pitts);
-                var pittsPath = d3.geoPath().projection(pittsProjection);
-
-                //update map
-                data.forEach( d => {
-                  d.Position = pittsProjection( [d.longitude, d.latitude]);
-                });
-                let circles=chartArea.selectAll("circle").data(data)
-                  .join("circle")
-                  .attr("r", 5)
-                  .attr("fill", "orange")
-                  .attr("opacity", 0.5)
-                  .attr("cx", d => d.Position[0])
-                  .attr("cy", d => d.Position[1]);
-              };
-
-
-
 
   };
-
-
-
 
     // RequestData call
 
