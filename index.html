@@ -55,38 +55,6 @@
     font-family: Arial, sans-serif;
   }
 
-.sidebar{
-  flex-wrap: wrap;
-  flex-direction: row;
-}
-
-.sidediv{
-  margin: 20px;
-}
-
-.sidebutton{
-  flex-direction: row;
-}
-
-.sidebutton button{
-  margin-top: 50px;
-  margin-right: 10px;
-  background-color: #ff9933;
-  color: white;
-  padding: 15px 40px;
-  text-align: center;
-  border: none;
-  font-size: 16px;
-  border-radius: 5px;
-}
-
-.sidebutton button:hover{
-  background-color: #ff8000;
-}
-
-
-
-
   </style>
 
 </head>
@@ -102,33 +70,35 @@
 </svg>
 
     <div id="sidebar">
+
+
     <div id="filters" class="sidediv">
       <h3>Choose a Restuarant Category</h3>
 
-      <span class="check"><input type="checkbox" class="checkbox" name="active" value="active">Active&#129409;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="arts" value="arts">Art&#127912;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="bakeries" value="bakeries">Bakeries&#127838;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="cafes" value="cafes">Cafes&#127854;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="chinese" value="chinese">Chinese&#127836;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="coffee" value="coffee">Coffee&#127854;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="donuts" value="donuts">Donuts&#127849;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="ethnicmarkets" value="ethnicmarkets">Ethnicmarkets&#127851;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="french" value="french">French&#127848;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="indpak" value="indpak">Indpak&#127869;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="italian" value="italian">Italian&#127837;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="japanese" value="japanese">Japanese&#127857;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="mexican" value="mexican">Mexican&#127831;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="newamerican" value="newamerican">NewAmerican&#127828;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="nightlife" value="nightlife">NightLife&#127865;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="pizza" value="pizza">Pizza&#127829;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="restaurant" value="restaurant">Resturant&#127860;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="sandwiches" value="sandwiches">Sandwiches&#127856;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="shopping" value="shopping">Shopping&#128091;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="sushi" value="sushi">Sushi&#127843;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="thai" value="thai">Thai&#127835;</span>
-      <span class="check"><input type="checkbox" class="checkbox" name="vietnamese" value="vietnamese">Vietnamese&#127858;</span>
-</div>
-  <div id="filters" class="sidediv">
+      <span class="check"><input type="checkbox" class="checkbox" name="active" value="active">Active</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="arts" value="arts">Art</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="bakeries" value="bakeries">Bakeries</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="cafes" value="cafes">Cafes</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="chinese" value="chinese">Chinese</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="coffee" value="coffee">Coffee</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="donuts" value="donuts">Donuts</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="ethnicmarkets" value="ethnicmarkets">Ethnicmarkets</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="french" value="french">French</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="indpak" value="indpak">Indpak</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="italian" value="italian">Italian</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="japanese" value="japanese">Japanese</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="mexican" value="mexican">Mexican</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="newamerican" value="newamerican">NewAmerican</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="nightlife" value="nightlife">NightLife</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="pizza" value="pizza">Pizza</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="restaurant" value="restaurant">Resturant</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="sandwiches" value="sandwiches">Sandwiches</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="shopping" value="shopping">Shopping</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="sushi" value="sushi">Sushi</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="thai" value="thai">Thai</span>
+      <span class="check"><input type="checkbox" class="checkbox" name="vietnamese" value="vietnamese">Vietnamese</span>
+
+
       <h3>Choose Popular Neighborhood</h3>
       <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Downtown" value="Downtown">Downtown</span>
       <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Lawrenceville" value="Lawrenceville">Lawrenceville</span>
@@ -137,15 +107,13 @@
       <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Squirrel Hill" value="Squirrel Hill">Squirrel Hill</span>
       <span class="check"><input type="checkbox" class="neighborhoodcheckbox" name="Strip District" value="Strip District">Strip District</span>
 
-<div class="sidebutton">
-  <button type="button" name="button">Filter</button>
-  <button type="button" name="button" class="clear">Clear</button>
-</div>
-    </div>
 
+      <button type="button" name="button">Filter</button>
+      <button type="button" name="button" class="clear">Clear</button>
 
     </div>
 
+  </div>
 
 
   <script id="code">
@@ -245,13 +213,16 @@
       let circles=chartArea.selectAll("circle").data(yelpData)
         .join("circle")
         .attr("r", 5)
-        .attr("fill", "orange")
+        .attr("fill", "#fc6e61")
         .attr("opacity", 0.5)
         .attr("cx", d => d.Position[0])
         .attr("cy", d => d.Position[1])
         .on("mouseenter", function() {
 
           let dot = d3.select(this);
+
+          dot.attr("opacity", 1)
+            .attr("fill", "#ffc20a");
 
           txt.text(dot.datum().name);
           var category = (dot.datum().category).toUpperCase();;
@@ -279,6 +250,9 @@
         .on("mouseout", function() {
 
           let dot = d3.select(this);
+
+          dot.attr("opacity", 0.5)
+            .attr("fill", "#fc6e61");
 
           tooltip.style("visibility","hidden");
 
@@ -325,7 +299,7 @@
     let circles_mini=minimapArea.selectAll("circle").data(yelpData)
       .join("circle")
       .attr("r", 2)
-      .attr("fill", "orange")
+      .attr("fill", "#fc6e61")
       .attr("opacity", 0.5)
       .attr("cx", d => d.mini_Position[0])
       .attr("cy", d => d.mini_Position[1]);
@@ -379,7 +353,7 @@
             minimapBounds = [pittsProjection_mini(upperleft), pittsProjection_mini(lowerright)]
             // console.log(minimapBounds)
 //sos: transform issue
-          // // adjust circle size too
+          // adjust circle size too
           circles.attr("r", 6 / transform.k);
 
           // unadjust hover box
@@ -522,7 +496,7 @@
                 let circles = chartArea.selectAll("circle").data(data)
                   .join("circle")
                   .attr("r", 5)
-                  .attr("fill", "orange")
+                  .attr("fill", "#fc6e61")
                   .attr("opacity", 0.5)
                   .attr("cx", d => d.Position[0])
                   .attr("cy", d => d.Position[1]);
@@ -544,7 +518,7 @@
                 let circles_mini=minimapArea.selectAll("circle").data(data)
                   .join("circle")
                   .attr("r", 2)
-                  .attr("fill", "orange")
+                  .attr("fill", "#fc6e61")
                   .attr("opacity", 0.5)
                   .attr("cx", d => d.mini_Position[0])
                   .attr("cy", d => d.mini_Position[1]);
