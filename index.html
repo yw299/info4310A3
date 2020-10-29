@@ -393,6 +393,129 @@
           .attr("x", 70)
           .attr("y", 40);
 
+          // Drawing Resturant Positions on minimap
+          let circles_mini=minimapArea.selectAll("circle").data(yelpData)
+            .join("circle")
+            .attr("r", 2)
+            .attr("fill", "#fc6e61")
+            .attr("opacity", 0.5)
+            .attr("cx", d => d.mini_Position[0])
+            .attr("cy", d => d.mini_Position[1]);
+
+              //zoom
+              let zoomExtent = [[0,0],[900,mapHeight]];
+              let translateExtent = [[-100,-100],[1000,1000]];
+              var plotZoom = d3.zoom()
+                             .extent(zoomExtent)
+                             .translateExtent(translateExtent)
+                             .scaleExtent([1,8])
+                             .on("zoom", plotZoomed);
+
+
+
+           // then add the zoom handler
+          map.call(plotZoom);
+
+
+          // add a brush
+          let brushGroup = minimapArea.append("g").attr("class","brush");
+          let brush = d3.brush()
+              .extent([[0,0], [minimapWidth,minimapHeight]])
+              //.on("start", startbrush)
+              .on("brush", brushed)
+              //.on("end", endbrush);
+          brushGroup.call(brush)
+
+          function plotZoomed( evt ) {
+
+            let transform = evt.transform;
+
+            chartArea.attr("transform", transform);
+
+            function getScreenCoords(x, y,transform) { 
+              var xn = (x-transform.x)/transform.k ; 
+              var yn = (y-transform.y)/transform.k ; 
+              return [xn, yn]; 
+            }
+
+            // console.log(evt)
+              let upperleft=pittsProjection.invert(getScreenCoords(0,0,evt.transform))
+              let lowerright=pittsProjection.invert(getScreenCoords(mapWidth,mapHeight,evt.transform))
+              minimapBounds = [pittsProjection_mini(upperleft), pittsProjection_mini(lowerright)]
+                  // console.log(minimapBounds)
+
+                  //sos: transform issue
+              // adjust circle size too
+              circles.attr("width", 50 / transform.k);
+              circles.attr("height", 50 / transform.k);
+
+              x_translate = 125/transform.k;
+              y_translate = 46/transform.k;
+
+              // unadjust hover box
+              hover.attr("width", tooltipWidth / transform.k)
+                .attr("height", tooltipHeight / transform.k)
+                .attr("rx", 8/transform.k)
+                .attr("transform", "translate(" + (125 - x_translate) +", " + (-45 + y_translate) +")");
+
+              // unadjust hover box text
+              txt.attr("font-size", 14 / transform.k)
+                .attr("x", tooltipWidth / 2.0 / transform.k)
+                .attr("y", 25 / transform.k)
+                .attr("transform", "translate(" + (125 - x_translate) +", " + (-45 + y_translate) +")");
+
+              txt2.attr("font-size", 12 / transform.k)
+                .attr("x", tooltipWidth / 2.0 / transform.k)
+                .attr("y", 50 / transform.k)
+                .attr("transform", "translate(" + (125 - x_translate) +", " + (-45 + y_translate) +")");
+
+              txt3.attr("font-size", 14 / transform.k)
+                .attr("x", tooltipWidth / 2.0 / transform.k)
+                .attr("y", 75 / transform.k)
+                .attr("transform", "translate(" + (125 - x_translate) +", " + (-45 + y_translate) +")");
+
+              // unadjust restaurant image_url
+              rimg.attr("width", 75/transform.k)
+                .attr("height", 45/transform.k)
+                .attr("x", 70/transform.k)
+                .attr("y", 40/transform.k)
+                .attr("transform", "translate(" + (125 - x_translate) +", " + (-45 + y_translate) +")");
+
+
+            brushGroup.call(brush.move, minimapBounds)
+
+              }
+
+              function brushed( {sourceEvent, selection} ) {
+
+                // // this will go into an infinite loop if you don't catch the things triggered by the zoom
+                if (sourceEvent === undefined) {
+                  return;
+                }
+                //
+                let transform = d3.zoomTransform(chartArea.node());
+                // console.log(transform)
+
+              // console.log(selection)
+                      let upperleft=pittsProjection_mini.invert([selection[0][0],selection[0][1]])
+                      let lowerright=pittsProjection_mini.invert([selection[1][0],selection[1][1]])
+                      // console.log(upperleft)
+                      // console.log(lowerright)
+                      // function getScreenCoords(x, y,transform) { 
+                      //     var xn = (x-transform.x)/transform.k ; 
+                      //      var yn = (y-transform.y)/transform.k ; 
+                      //       return [xn, yn]; 
+                      //     }
+
+
+                 transform.x = selection[0][0]-(pittsProjection(upperleft)[0])*transform.k;
+                 transform.y = selection[0][1]-(pittsProjection(upperleft)[1])*transform.k;
+
+                //
+              map.call(plotZoom.transform, transform);
+              }
+
+              map.call(plotZoom.transform, d3.zoomIdentity);
 
         }
 
@@ -503,137 +626,6 @@
                     .attr("cx", d => d.mini_Position[0])
                     .attr("cy", d => d.mini_Position[1]);
                 };
-
-
-
-    // Drawing Resturant Positions on minimap
-    let circles_mini=minimapArea.selectAll("circle").data(yelpData)
-      .join("circle")
-      .attr("r", 2)
-      .attr("fill", "#fc6e61")
-      .attr("opacity", 0.5)
-      .attr("cx", d => d.mini_Position[0])
-      .attr("cy", d => d.mini_Position[1]);
-
-        //zoom
-        let zoomExtent = [[0,0],[900,mapHeight]];
-        let translateExtent = [[-100,-100],[1000,1000]];
-        var plotZoom = d3.zoom()
-                       .extent(zoomExtent)
-                       .translateExtent(translateExtent)
-                       .scaleExtent([1,8])
-                       .on("zoom", plotZoomed);
-
-
-
-     // then add the zoom handler
-    map.call(plotZoom);
-
-
-    // add a brush
-    let brushGroup = minimapArea.append("g").attr("class","brush");
-    let brush = d3.brush()
-        .extent([[0,0], [minimapWidth,minimapHeight]])
-        //.on("start", startbrush)
-        .on("brush", brushed)
-        //.on("end", endbrush);
-    brushGroup.call(brush)
-
-
-    function plotZoomed( evt ) {
-
-      let transform = evt.transform;
-
-      chartArea.attr("transform", transform);
-      function getScreenCoords(x, y,transform) { 
-        var xn = (x-transform.x)/transform.k ; 
-        var yn = (y-transform.y)/transform.k ; 
-        return [xn, yn]; }
-
-      // console.log(evt)
-        let upperleft=pittsProjection.invert(getScreenCoords(0,0,evt.transform))
-        let lowerright=pittsProjection.invert(getScreenCoords(mapWidth,mapHeight,evt.transform))
-        minimapBounds = [pittsProjection_mini(upperleft), pittsProjection_mini(lowerright)]
-            // console.log(minimapBounds)
-
-            //sos: transform issue
-        // adjust circle size too
-        circles.attr("width", 50 / transform.k);
-        circles.attr("height", 50 / transform.k);
-
-        x_translate = 125/transform.k;
-        y_translate = 46/transform.k;
-
-        // unadjust hover box
-        hover.attr("width", tooltipWidth / transform.k)
-          .attr("height", tooltipHeight / transform.k)
-          .attr("rx", 8/transform.k)
-          .attr("transform", "translate(" + (125 - x_translate) +", " + (-45 + y_translate) +")");
-
-        // unadjust hover box text
-        txt.attr("font-size", 11 / transform.k)
-          .attr("x", tooltipWidth / 2.0 / transform.k)
-          .attr("y", 25 / transform.k)
-          .attr("transform", "translate(" + (125 - x_translate) +", " + (-45 + y_translate) +")");
-
-        txt2.attr("font-size", 11 / transform.k)
-          .attr("x", tooltipWidth / 2.0 / transform.k)
-          .attr("y", 50 / transform.k)
-          .attr("transform", "translate(" + (125 - x_translate) +", " + (-45 + y_translate) +")");
-
-        txt3.attr("font-size", 14 / transform.k)
-          .attr("x", tooltipWidth / 2.0 / transform.k)
-          .attr("y", 75 / transform.k)
-          .attr("transform", "translate(" + (125 - x_translate) +", " + (-45 + y_translate) +")");
-
-        // unadjust restaurant image_url
-        rimg.attr("width", 75/transform.k)
-          .attr("height", 45/transform.k)
-          .attr("x", 70/transform.k)
-          .attr("y", 40/transform.k)
-          .attr("transform", "translate(" + (125 - x_translate) +", " + (-45 + y_translate) +")");
-
-
-      brushGroup.call(brush.move, minimapBounds)
-
-
-        }
-
-
-
-        function brushed( {sourceEvent, selection} ) {
-
-          // // this will go into an infinite loop if you don't catch the things triggered by the zoom
-          if (sourceEvent === undefined) {
-            return;
-          }
-          //
-          let transform = d3.zoomTransform(chartArea.node());
-          // console.log(transform)
-
-        // console.log(selection)
-                let upperleft=pittsProjection_mini.invert([selection[0][0],selection[0][1]])
-                let lowerright=pittsProjection_mini.invert([selection[1][0],selection[1][1]])
-                // console.log(upperleft)
-                // console.log(lowerright)
-                function getScreenCoords(x, y,transform) { 
-                    var xn = (x-transform.x)/transform.k ; 
-                     var yn = (y-transform.y)/transform.k ; 
-                      return [xn, yn]; }
-
-
-           transform.x = selection[0][0]-(pittsProjection(upperleft)[0])*transform.k;
-           transform.y = selection[0][1]-(pittsProjection(upperleft)[1])*transform.k;
-
-          //
-        map.call(plotZoom.transform, transform);
-        }
-
-
-        map.call(plotZoom.transform, d3.zoomIdentity);
-
-
-
 
 
   };
